@@ -7,6 +7,7 @@ import (
 	"orchestrator/internal/controllers/auth"
 	"orchestrator/internal/controllers/expr"
 	jwtware "orchestrator/internal/controllers/middlewares/jwt"
+	"orchestrator/internal/controllers/middlewares/recoverer"
 	"orchestrator/internal/controllers/middlewares/swagger"
 	"orchestrator/internal/db"
 	"orchestrator/internal/db/expressions"
@@ -32,7 +33,7 @@ func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *db.
 
 	// set up middlewares
 	app.Use(cors.New())
-	// app.Use(recoverer.New()) // TODO: enable in PROD
+	app.Use(recoverer.New())
 	app.Use(swagger.New(swagger.Config{
 		FilePath: "./docs/swagger.json",
 		Path:     "./docs",

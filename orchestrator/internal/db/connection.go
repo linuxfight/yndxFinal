@@ -8,11 +8,8 @@ import (
 	"orchestrator/internal/db/users"
 )
 
-const defaultConn = "postgres://postgres:password@localhost:5432/db"
-
-func NewSql() (*users.Queries, *expressions.Queries, *pgx.Conn, error) {
-	// TODO: add config
-	dbConn, err := pgx.Connect(context.Background(), defaultConn)
+func NewSql(conn string) (*users.Queries, *expressions.Queries, *pgx.Conn, error) {
+	dbConn, err := pgx.Connect(context.Background(), conn)
 	if err != nil {
 		return nil, nil, dbConn, err
 	}

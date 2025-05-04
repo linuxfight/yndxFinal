@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/log"
 	"github.com/jackc/pgx/v5"
+	"orchestrator/internal/config"
 	"orchestrator/internal/controllers"
 	"orchestrator/internal/controllers/tasks"
 	"orchestrator/internal/db"
@@ -27,14 +28,16 @@ import (
 // @name Authorization
 // @description "Type 'Bearer TOKEN' to correctly set the API Key"
 func main() {
+	cfg := config.New()
+
 	// connect to db
-	cache, err := db.NewCache()
+	cache, err := db.NewCache(cfg.ValkeyConn)
 	if err != nil {
 		panic(err)
 	}
 	log.Info("connected to cache")
 
-	userRepo, exprRepo, dbConn, err := db.NewSql()
+	userRepo, exprRepo, dbConn, err := db.NewSql(cfg.PostgresConn)
 	if err != nil {
 		if dbConn != nil {
 			if dbErr := dbConn.Close(context.Background()); dbErr != nil {
@@ -46,7 +49,7 @@ func main() {
 	log.Info("connected to database")
 
 	web := controllers.NewFiber(userRepo, exprRepo, cache)
-	stub := tasks.NewGrpc(cache, exprRepo)
+	stub := tasks.NewGrpc(cache, exprRepo, cfg.OperationTime)
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)

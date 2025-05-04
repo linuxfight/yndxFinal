@@ -20,6 +20,8 @@ type TasksServer struct {
 	server *grpc.Server
 	cache  *db.Cache
 	expr   *expressions.Queries
+
+	limit int
 }
 
 func (s *TasksServer) Listen() error {
@@ -61,7 +63,7 @@ func (s *TasksServer) GetTask(_ *emptypb.Empty, stream grpc.ServerStreamingServe
 		resp.Id = item.ID
 		resp.Arg1 = fmt.Sprintf("%v", item.Arg1)
 		resp.Arg2 = fmt.Sprintf("%v", item.Arg2)
-		resp.Time = 1000 // TODO: Update with actual value
+		resp.Time = int32(s.limit)
 
 		if err := stream.Send(resp); err != nil {
 			return err
@@ -104,12 +106,13 @@ func (s *TasksServer) UpdateTask(ctx context.Context, req *gen.UpdateTaskRequest
 	return &emptypb.Empty{}, nil
 }
 
-func NewGrpc(storage *db.Cache, expr *expressions.Queries) *TasksServer {
+func NewGrpc(storage *db.Cache, expr *expressions.Queries, limit int) *TasksServer {
 	server := grpc.NewServer()
 	ctl := TasksServer{
 		cache:  storage,
 		server: server,
 		expr:   expr,
+		limit:  limit,
 	}
 	gen.RegisterOrchestratorServer(server, &ctl)
 	reflection.Register(server)

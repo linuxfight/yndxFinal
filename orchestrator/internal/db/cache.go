@@ -8,9 +8,6 @@ import (
 	"orchestrator/pkg/calc"
 )
 
-// TODO: add config
-const dbConn = "127.0.0.1:6379"
-
 var errStillProcessing = errors.New("still processing")
 
 type Cache struct {
@@ -125,8 +122,8 @@ func (c *Cache) UpdateTaskArgs(ctx context.Context, task *calc.Task) error {
 	return nil
 }
 
-func NewCache() (*Cache, error) {
-	client, err := valkey.NewClient(valkey.ClientOption{InitAddress: []string{dbConn}})
+func NewCache(conn string) (*Cache, error) {
+	client, err := valkey.NewClient(valkey.ClientOption{InitAddress: []string{conn}})
 	if err != nil {
 		return nil, err
 	}
