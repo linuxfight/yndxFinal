@@ -1,4 +1,4 @@
-package utils
+package calc
 
 import (
 	"errors"
@@ -11,13 +11,13 @@ func TestParseExpression(t *testing.T) {
 		expression  string
 		wantTasks   int
 		wantErr     error
-		checkResult func(t *testing.T, tasks []InternalTask)
+		checkResult func(t *testing.T, tasks []Task)
 	}{
 		{
 			name:       "simple addition",
 			expression: "2 + 3",
 			wantTasks:  1,
-			checkResult: func(t *testing.T, tasks []InternalTask) {
+			checkResult: func(t *testing.T, tasks []Task) {
 				assertTask(t, tasks[0], "+", 2.0, 3.0)
 			},
 		},
@@ -25,7 +25,7 @@ func TestParseExpression(t *testing.T) {
 			name:       "operator precedence",
 			expression: "2 + 3 * 4",
 			wantTasks:  2,
-			checkResult: func(t *testing.T, tasks []InternalTask) {
+			checkResult: func(t *testing.T, tasks []Task) {
 				assertTask(t, tasks[0], "*", 3.0, 4.0)
 				assertTask(t, tasks[1], "+", 2.0, tasks[0].ID)
 			},
@@ -34,7 +34,7 @@ func TestParseExpression(t *testing.T) {
 			name:       "parentheses",
 			expression: "(2 + 3) * 4",
 			wantTasks:  2,
-			checkResult: func(t *testing.T, tasks []InternalTask) {
+			checkResult: func(t *testing.T, tasks []Task) {
 				assertTask(t, tasks[0], "+", 2.0, 3.0)
 				assertTask(t, tasks[1], "*", tasks[0].ID, 4.0)
 			},
@@ -43,7 +43,7 @@ func TestParseExpression(t *testing.T) {
 			name:       "unary minus",
 			expression: "-5 + 3",
 			wantTasks:  2,
-			checkResult: func(t *testing.T, tasks []InternalTask) {
+			checkResult: func(t *testing.T, tasks []Task) {
 				assertTask(t, tasks[0], "-", 0.0, 5.0)
 				assertTask(t, tasks[1], "+", tasks[0].ID, 3.0)
 			},
@@ -64,7 +64,7 @@ func TestParseExpression(t *testing.T) {
 			name:       "floating point numbers",
 			expression: "3.5 * 2",
 			wantTasks:  1,
-			checkResult: func(t *testing.T, tasks []InternalTask) {
+			checkResult: func(t *testing.T, tasks []Task) {
 				assertTask(t, tasks[0], "*", 3.5, 2.0)
 			},
 		},
@@ -72,7 +72,7 @@ func TestParseExpression(t *testing.T) {
 			name:       "complex expression",
 			expression: "((3 + 5) * 2 - 4) / 2",
 			wantTasks:  4,
-			checkResult: func(t *testing.T, tasks []InternalTask) {
+			checkResult: func(t *testing.T, tasks []Task) {
 				assertTask(t, tasks[0], "+", 3.0, 5.0)
 				assertTask(t, tasks[1], "*", tasks[0].ID, 2.0)
 				assertTask(t, tasks[2], "-", tasks[1].ID, 4.0)
@@ -110,7 +110,7 @@ func TestParseExpression(t *testing.T) {
 	}
 }
 
-func assertTask(t *testing.T, task InternalTask, op string, arg1, arg2 interface{}) {
+func assertTask(t *testing.T, task Task, op string, arg1, arg2 interface{}) {
 	t.Helper()
 
 	if task.Operation != op {

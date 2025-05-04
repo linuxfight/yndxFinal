@@ -4,7 +4,7 @@
 // 	protoc        v6.30.2
 // source: tasks.proto
 
-package tasksServer
+package gen
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -132,7 +132,7 @@ type TaskResponse struct {
 	Arg1          string                 `protobuf:"bytes,2,opt,name=arg1,proto3" json:"arg1,omitempty"`
 	Arg2          string                 `protobuf:"bytes,3,opt,name=arg2,proto3" json:"arg2,omitempty"`
 	Time          int32                  `protobuf:"varint,4,opt,name=time,proto3" json:"time,omitempty"`
-	Operator      Operator               `protobuf:"varint,5,opt,name=operator,proto3,enum=tasksServer.Operator" json:"operator,omitempty"`
+	Operator      Operator               `protobuf:"varint,5,opt,name=operator,proto3,enum=gen.Operator" json:"operator,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -206,25 +206,25 @@ var File_tasks_proto protoreflect.FileDescriptor
 
 const file_tasks_proto_rawDesc = "" +
 	"\n" +
-	"\vtasks.proto\x12\vtasksServer\x1a\x1bgoogle/protobuf/empty.proto\";\n" +
+	"\vtasks.proto\x12\x03gen\x1a\x1bgoogle/protobuf/empty.proto\";\n" +
 	"\x11UpdateTaskRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
-	"\x06result\x18\x02 \x01(\tR\x06result\"\x8d\x01\n" +
+	"\x06result\x18\x02 \x01(\tR\x06result\"\x85\x01\n" +
 	"\fTaskResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04arg1\x18\x02 \x01(\tR\x04arg1\x12\x12\n" +
 	"\x04arg2\x18\x03 \x01(\tR\x04arg2\x12\x12\n" +
-	"\x04time\x18\x04 \x01(\x05R\x04time\x121\n" +
-	"\boperator\x18\x05 \x01(\x0e2\x15.tasksServer.OperatorR\boperator*L\n" +
+	"\x04time\x18\x04 \x01(\x05R\x04time\x12)\n" +
+	"\boperator\x18\x05 \x01(\x0e2\r.gen.OperatorR\boperator*L\n" +
 	"\bOperator\x12\r\n" +
 	"\tADDICTION\x10\x00\x12\x0f\n" +
 	"\vSUBTRACTION\x10\x01\x12\x12\n" +
 	"\x0eMULTIPLICATION\x10\x02\x12\f\n" +
-	"\bDIVISION\x10\x032\x94\x01\n" +
-	"\fOrchestrator\x12>\n" +
-	"\aGetTask\x12\x16.google.protobuf.Empty\x1a\x19.tasksServer.TaskResponse0\x01\x12D\n" +
+	"\bDIVISION\x10\x032\x84\x01\n" +
+	"\fOrchestrator\x126\n" +
+	"\aGetTask\x12\x16.google.protobuf.Empty\x1a\x11.gen.TaskResponse0\x01\x12<\n" +
 	"\n" +
-	"UpdateTask\x12\x1e.tasksServer.UpdateTaskRequest\x1a\x16.google.protobuf.EmptyB/Z-orchestrator/internal/controllers/tasksServerb\x06proto3"
+	"UpdateTask\x12\x16.gen.UpdateTaskRequest\x1a\x16.google.protobuf.EmptyB-Z+orchestrator/internal/controllers/tasks/genb\x06proto3"
 
 var (
 	file_tasks_proto_rawDescOnce sync.Once
@@ -241,17 +241,17 @@ func file_tasks_proto_rawDescGZIP() []byte {
 var file_tasks_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_tasks_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_tasks_proto_goTypes = []any{
-	(Operator)(0),             // 0: tasksServer.Operator
-	(*UpdateTaskRequest)(nil), // 1: tasksServer.UpdateTaskRequest
-	(*TaskResponse)(nil),      // 2: tasksServer.TaskResponse
+	(Operator)(0),             // 0: gen.Operator
+	(*UpdateTaskRequest)(nil), // 1: gen.UpdateTaskRequest
+	(*TaskResponse)(nil),      // 2: gen.TaskResponse
 	(*emptypb.Empty)(nil),     // 3: google.protobuf.Empty
 }
 var file_tasks_proto_depIdxs = []int32{
-	0, // 0: tasksServer.TaskResponse.operator:type_name -> tasksServer.Operator
-	3, // 1: tasksServer.Orchestrator.GetTask:input_type -> google.protobuf.Empty
-	1, // 2: tasksServer.Orchestrator.UpdateTask:input_type -> tasksServer.UpdateTaskRequest
-	2, // 3: tasksServer.Orchestrator.GetTask:output_type -> tasksServer.TaskResponse
-	3, // 4: tasksServer.Orchestrator.UpdateTask:output_type -> google.protobuf.Empty
+	0, // 0: gen.TaskResponse.operator:type_name -> gen.Operator
+	3, // 1: gen.Orchestrator.GetTask:input_type -> google.protobuf.Empty
+	1, // 2: gen.Orchestrator.UpdateTask:input_type -> gen.UpdateTaskRequest
+	2, // 3: gen.Orchestrator.GetTask:output_type -> gen.TaskResponse
+	3, // 4: gen.Orchestrator.UpdateTask:output_type -> google.protobuf.Empty
 	3, // [3:5] is the sub-list for method output_type
 	1, // [1:3] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

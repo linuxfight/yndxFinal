@@ -1,17 +1,17 @@
-package solver
+package expr
 
 import (
 	"github.com/gofiber/fiber/v3"
+	"orchestrator/internal/db"
 	"orchestrator/internal/db/expressions"
-	"orchestrator/internal/db/tasksStorage"
 )
 
 type Controller struct {
 	exprRepo *expressions.Queries
-	tasks    *tasksStorage.Cache
+	tasks    *db.Cache
 }
 
-func New(exprs *expressions.Queries, cache *tasksStorage.Cache) *Controller {
+func New(exprs *expressions.Queries, cache *db.Cache) *Controller {
 	return &Controller{exprRepo: exprs, tasks: cache}
 }
 

@@ -1,10 +1,10 @@
-package solver
+package expr
 
 import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/oklog/ulid/v2"
 	"orchestrator/internal/controllers/dto"
-	"orchestrator/internal/controllers/utils"
+	"orchestrator/internal/utils"
 )
 
 // GetById @Summary      Получить выражение по ULID

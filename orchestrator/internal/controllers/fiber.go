@@ -1,23 +1,23 @@
-package app
+package controllers
 
 import (
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"orchestrator/internal/controllers/auth"
+	"orchestrator/internal/controllers/expr"
 	jwtware "orchestrator/internal/controllers/middlewares/jwt"
 	"orchestrator/internal/controllers/middlewares/swagger"
-	"orchestrator/internal/controllers/solver"
-	"orchestrator/internal/controllers/utils"
+	"orchestrator/internal/db"
 	"orchestrator/internal/db/expressions"
-	"orchestrator/internal/db/tasksStorage"
 	"orchestrator/internal/db/users"
+	"orchestrator/internal/utils"
 	"os"
 )
 
 const testingSecret = "not_v3ry_s3cR3T"
 
-func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *tasksStorage.Cache) *fiber.App {
+func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *db.Cache) *fiber.App {
 	// create fiber app
 	cfg := fiber.Config{
 		JSONDecoder: sonic.Unmarshal,
@@ -46,7 +46,7 @@ func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *tas
 	authCtl := auth.New(userRepo, jwtSecret)
 	authCtl.Setup(group)
 
-	// set up solver
+	// set up expr
 	authWare := jwtware.New(jwtware.Config{
 		ErrorHandler: func(ctx fiber.Ctx, err error) error {
 			return utils.SendError(ctx, err.Error(), fiber.StatusUnauthorized)
@@ -56,7 +56,7 @@ func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *tas
 			Key:    []byte(jwtSecret),
 		},
 	})
-	solverCtl := solver.New(exprRepo, cache)
+	solverCtl := expr.New(exprRepo, cache)
 	solverCtl.Setup(group, authWare)
 
 	return app

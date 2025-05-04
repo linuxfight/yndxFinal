@@ -4,7 +4,7 @@
 // - protoc             v6.30.2
 // source: tasks.proto
 
-package tasksServer
+package gen
 
 import (
 	context "context"
@@ -20,8 +20,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Orchestrator_GetTask_FullMethodName    = "/tasksServer.Orchestrator/GetTask"
-	Orchestrator_UpdateTask_FullMethodName = "/tasksServer.Orchestrator/UpdateTask"
+	Orchestrator_GetTask_FullMethodName    = "/gen.Orchestrator/GetTask"
+	Orchestrator_UpdateTask_FullMethodName = "/gen.Orchestrator/UpdateTask"
 )
 
 // OrchestratorClient is the client API for Orchestrator service.
@@ -145,7 +145,7 @@ func _Orchestrator_UpdateTask_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Orchestrator_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "tasksServer.Orchestrator",
+	ServiceName: "gen.Orchestrator",
 	HandlerType: (*OrchestratorServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

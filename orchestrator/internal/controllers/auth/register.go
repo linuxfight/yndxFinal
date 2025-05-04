@@ -4,8 +4,8 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/oklog/ulid/v2"
 	"orchestrator/internal/controllers/dto"
-	"orchestrator/internal/controllers/utils"
 	"orchestrator/internal/db/users"
+	"orchestrator/internal/utils"
 	"time"
 )
 
@@ -31,7 +31,7 @@ func (ctl *Controller) register(ctx fiber.Ctx) error {
 		return utils.SendError(ctx, dto.Conflict, fiber.StatusConflict)
 	}
 
-	passwordHash, err := utils.CreateHash(body.Password, utils.DefaultParams)
+	passwordHash, err := CreateHash(body.Password, DefaultParams)
 	if err != nil {
 		return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
 	}
@@ -47,7 +47,7 @@ func (ctl *Controller) register(ctx fiber.Ctx) error {
 		return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
 	}
 
-	token, err := utils.GenerateToken(userID, time.Now().Add(time.Hour*24), ctl.jwtSecret)
+	token, err := generateToken(userID, time.Now().Add(time.Hour*24), ctl.jwtSecret)
 	if err != nil {
 		return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
 	}

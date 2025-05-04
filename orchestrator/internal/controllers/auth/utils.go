@@ -1,11 +1,11 @@
-package utils
+package auth
 
 import (
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
 
-func GenerateToken(userID string, expires time.Time, secret string) (string, error) {
+func generateToken(userID string, expires time.Time, secret string) (string, error) {
 	claims := jwt.MapClaims{
 		"sub": userID,
 		"iat": time.Now().Unix(),

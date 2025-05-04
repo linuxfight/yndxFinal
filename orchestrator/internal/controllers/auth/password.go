@@ -1,6 +1,6 @@
 // original package - https://github.com/alexedwards/argon2id
 
-package utils
+package auth
 
 import (
 	"crypto/rand"

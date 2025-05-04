@@ -1,9 +1,9 @@
-package solver
+package expr
 
 import (
 	"github.com/gofiber/fiber/v3"
 	"orchestrator/internal/controllers/dto"
-	"orchestrator/internal/controllers/utils"
+	"orchestrator/internal/utils"
 )
 
 // list @Summary      Получить весь список выражений

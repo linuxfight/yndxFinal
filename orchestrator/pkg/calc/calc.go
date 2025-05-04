@@ -1,4 +1,4 @@
-package utils
+package calc
 
 import (
 	"errors"
@@ -8,12 +8,11 @@ import (
 	"go/parser"
 	"go/token"
 	"orchestrator/internal/controllers/dto"
-	"orchestrator/internal/controllers/tasksServer"
 	"strconv"
 	"strings"
 )
 
-type InternalTask struct {
+type Task struct {
 	ID        string
 	Arg1      interface{}
 	Arg2      interface{}
@@ -26,7 +25,7 @@ var (
 	errUnsupportedNode = fmt.Errorf("unsupported node type")
 )
 
-func Decode(task string) (*InternalTask, error) {
+func Decode(task string) (*Task, error) {
 	args := strings.Split(task, ";")
 	if len(args) != 5 {
 		return nil, errors.New("invalid string")
@@ -55,7 +54,7 @@ func Decode(task string) (*InternalTask, error) {
 		res = resfloat
 	}
 
-	return &InternalTask{
+	return &Task{
 		ID:        args[0],
 		Arg1:      arg1,
 		Arg2:      arg2,
@@ -64,7 +63,7 @@ func Decode(task string) (*InternalTask, error) {
 	}, nil
 }
 
-func Encode(t InternalTask) string {
+func Encode(t Task) string {
 	toString := func(v interface{}) string {
 		switch val := v.(type) {
 		case string:
@@ -89,29 +88,14 @@ func Encode(t InternalTask) string {
 	)
 }
 
-func GetOperator(t InternalTask) tasksServer.Operator {
-	switch t.Operation {
-	case "+":
-		return tasksServer.Operator_ADDICTION
-	case "-":
-		return tasksServer.Operator_SUBTRACTION
-	case "*":
-		return tasksServer.Operator_MULTIPLICATION
-	case "/":
-		return tasksServer.Operator_DIVISION
-	}
-
-	panic("invalid operation")
-}
-
 // ParseExpression parses a mathematical expression into a sequence of tasksStorage
-func ParseExpression(expression string) ([]InternalTask, error) {
+func ParseExpression(expression string) ([]Task, error) {
 	exprAst, err := parser.ParseExpr(expression)
 	if err != nil {
 		return nil, fmt.Errorf("parsing error: %w", err)
 	}
 
-	var tasks []InternalTask
+	var tasks []Task
 	_, err = processNode(exprAst, &tasks)
 	if err != nil {
 		return nil, err
@@ -121,7 +105,7 @@ func ParseExpression(expression string) ([]InternalTask, error) {
 }
 
 // processNode recursively processes AST nodes and creates tasksStorage
-func processNode(node ast.Node, tasks *[]InternalTask) (interface{}, error) {
+func processNode(node ast.Node, tasks *[]Task) (interface{}, error) {
 	switch n := node.(type) {
 	case *ast.BinaryExpr:
 		return processBinaryExpr(n, tasks)
@@ -136,7 +120,7 @@ func processNode(node ast.Node, tasks *[]InternalTask) (interface{}, error) {
 	}
 }
 
-func processBinaryExpr(expr *ast.BinaryExpr, tasks *[]InternalTask) (interface{}, error) {
+func processBinaryExpr(expr *ast.BinaryExpr, tasks *[]Task) (interface{}, error) {
 	left, err := processNode(expr.X, tasks)
 	if err != nil {
 		return nil, err
@@ -157,7 +141,7 @@ func processBinaryExpr(expr *ast.BinaryExpr, tasks *[]InternalTask) (interface{}
 	return createTask(tasks, left, right, expr.Op.String())
 }
 
-func processUnaryExpr(expr *ast.UnaryExpr, tasks *[]InternalTask) (interface{}, error) {
+func processUnaryExpr(expr *ast.UnaryExpr, tasks *[]Task) (interface{}, error) {
 	if expr.Op != token.SUB {
 		return nil, fmt.Errorf("unsupported unary operator: %v", expr.Op)
 	}
@@ -183,9 +167,9 @@ func processBasicLit(lit *ast.BasicLit) (float64, error) {
 	}
 }
 
-func createTask(tasks *[]InternalTask, left, right interface{}, operation string) (string, error) {
+func createTask(tasks *[]Task, left, right interface{}, operation string) (string, error) {
 	taskID := ulid.Make().String()
-	*tasks = append(*tasks, InternalTask{
+	*tasks = append(*tasks, Task{
 		ID:        taskID,
 		Arg1:      left,
 		Arg2:      right,

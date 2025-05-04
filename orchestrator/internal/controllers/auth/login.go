@@ -3,7 +3,7 @@ package auth
 import (
 	"github.com/gofiber/fiber/v3"
 	"orchestrator/internal/controllers/dto"
-	"orchestrator/internal/controllers/utils"
+	"orchestrator/internal/utils"
 	"time"
 )
 
@@ -31,7 +31,7 @@ func (ctl *Controller) login(ctx fiber.Ctx) error {
 		return utils.SendError(ctx, dto.NotFound, fiber.StatusNotFound)
 	}
 
-	match, err := utils.ComparePasswordAndHash(body.Password, user.PasswordHash)
+	match, err := ComparePasswordAndHash(body.Password, user.PasswordHash)
 	if err != nil {
 		return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
 	}
@@ -40,7 +40,7 @@ func (ctl *Controller) login(ctx fiber.Ctx) error {
 		return utils.SendError(ctx, dto.InvalidPassword, fiber.StatusUnauthorized)
 	}
 
-	token, err := utils.GenerateToken(user.ID, time.Now().Add(time.Hour*24), ctl.jwtSecret)
+	token, err := generateToken(user.ID, time.Now().Add(time.Hour*24), ctl.jwtSecret)
 	if err != nil {
 		return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
 	}

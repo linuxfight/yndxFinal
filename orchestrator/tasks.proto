@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package tasksServer;
-option go_package = "orchestrator/internal/controllers/tasksServer";
+package gen;
+option go_package = "orchestrator/internal/controllers/tasks/gen";
 
 import "google/protobuf/empty.proto";
 

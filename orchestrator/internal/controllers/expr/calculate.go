@@ -1,11 +1,12 @@
-package solver
+package expr
 
 import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/oklog/ulid/v2"
 	"orchestrator/internal/controllers/dto"
-	"orchestrator/internal/controllers/utils"
 	"orchestrator/internal/db/expressions"
+	"orchestrator/internal/utils"
+	"orchestrator/pkg/calc"
 	"strings"
 )
 
@@ -35,7 +36,7 @@ func (ctl *Controller) calculate(ctx fiber.Ctx) error {
 	}
 
 	id := ulid.Make().String()
-	tasks, err := utils.ParseExpression(body.Expression)
+	tasks, err := calc.ParseExpression(body.Expression)
 	if err != nil {
 		return utils.SendError(ctx, dto.InvalidData, fiber.StatusUnprocessableEntity)
 	}

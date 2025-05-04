@@ -5,9 +5,9 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/log"
 	"github.com/jackc/pgx/v5"
-	"orchestrator/cmd/app"
+	"orchestrator/internal/controllers"
+	"orchestrator/internal/controllers/tasks"
 	"orchestrator/internal/db"
-	"orchestrator/internal/db/tasksStorage"
 	"os"
 	"os/signal"
 	"syscall"
@@ -28,7 +28,7 @@ import (
 // @description "Type 'Bearer TOKEN' to correctly set the API Key"
 func main() {
 	// connect to db
-	cache, err := tasksStorage.NewCache()
+	cache, err := db.NewCache()
 	if err != nil {
 		panic(err)
 	}
@@ -45,8 +45,8 @@ func main() {
 	}
 	log.Info("connected to database")
 
-	web := app.NewFiber(userRepo, exprRepo, cache)
-	stub := app.NewGrpc(cache)
+	web := controllers.NewFiber(userRepo, exprRepo, cache)
+	stub := tasks.NewGrpc(cache, exprRepo)
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
@@ -80,7 +80,7 @@ func main() {
 	shutdown(web, dbConn, cache)
 }
 
-func shutdown(app *fiber.App, dbConn *pgx.Conn, cache *tasksStorage.Cache) {
+func shutdown(app *fiber.App, dbConn *pgx.Conn, cache *db.Cache) {
 	err := app.Shutdown()
 	if err != nil {
 		panic(err)
