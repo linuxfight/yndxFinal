@@ -21,6 +21,11 @@ type InternalTask struct {
 	Result    interface{}
 }
 
+var (
+	errDivisionByZero  = fmt.Errorf("division by zero")
+	errUnsupportedNode = fmt.Errorf("unsupported node type")
+)
+
 func Decode(task string) (*InternalTask, error) {
 	args := strings.Split(task, ";")
 	if len(args) != 5 {
@@ -99,11 +104,6 @@ func GetOperator(t InternalTask) tasksServer.Operator {
 	panic("invalid operation")
 }
 
-var (
-	divisionByZeroError  = fmt.Errorf("division by zero")
-	unsupportedNodeError = fmt.Errorf("unsupported node type")
-)
-
 // ParseExpression parses a mathematical expression into a sequence of tasksStorage
 func ParseExpression(expression string) ([]InternalTask, error) {
 	exprAst, err := parser.ParseExpr(expression)
@@ -132,7 +132,7 @@ func processNode(node ast.Node, tasks *[]InternalTask) (interface{}, error) {
 	case *ast.ParenExpr:
 		return processNode(n.X, tasks)
 	default:
-		return nil, unsupportedNodeError
+		return nil, errUnsupportedNode
 	}
 }
 
@@ -150,7 +150,7 @@ func processBinaryExpr(expr *ast.BinaryExpr, tasks *[]InternalTask) (interface{}
 	// Check for division by zero with literal values
 	if expr.Op == token.QUO {
 		if rval, ok := right.(float64); ok && rval == 0 {
-			return nil, divisionByZeroError
+			return nil, errDivisionByZero
 		}
 	}
 

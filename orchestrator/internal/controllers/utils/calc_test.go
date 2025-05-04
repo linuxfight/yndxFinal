@@ -52,7 +52,7 @@ func TestParseExpression(t *testing.T) {
 			name:       "division by zero",
 			expression: "5 / 0",
 			wantTasks:  0,
-			wantErr:    divisionByZeroError,
+			wantErr:    errDivisionByZero,
 		},
 		{
 			name:       "invalid character",

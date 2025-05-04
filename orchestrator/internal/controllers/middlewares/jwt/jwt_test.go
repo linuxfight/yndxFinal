@@ -13,7 +13,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/require"
 
-	jwtware "github.com/linuxfight/go-utils/jwt"
+	"orchestrator/internal/controllers/middlewares/jwt"
 )
 
 type TestToken struct {
