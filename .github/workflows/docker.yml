@@ -73,5 +73,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ steps.meta.outputs.images }}:buildcache
-          cache-to: type=registry,ref=${{ steps.meta.outputs.images }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ steps.meta.outputs.images }}-cache
+          cache-to: type=registry,ref=${{ steps.meta.outputs.images }}-cache,mode=max
