@@ -1,0 +1,227 @@
+basePath: /api/v1
+definitions:
+  dto.ApiError:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  dto.AuthRequest:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.AuthResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  dto.CalculateRequest:
+    properties:
+      expression:
+        example: 2+2
+        type: string
+    required:
+    - expression
+    type: object
+  dto.CalculateResponse:
+    properties:
+      id:
+        example: 928b303f-cfcc-46f4-ae24-aabb72bbb7d9
+        type: string
+    type: object
+  dto.Expression:
+    properties:
+      id:
+        example: 928b303f-cfcc-46f4-ae24-aabb72bbb7d9
+        type: string
+      result:
+        type: number
+      status:
+        example: DONE
+        type: string
+    type: object
+  dto.GetByIdExpressionResponse:
+    properties:
+      expression:
+        $ref: '#/definitions/dto.Expression'
+    type: object
+  dto.ListAllExpressionsResponse:
+    properties:
+      expressions:
+        items:
+          $ref: '#/definitions/dto.Expression'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Yandex Lyceum Calculator API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Orchestrator API
+  version: "1.0"
+paths:
+  /calculate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Объект, содержащий в себе выражение
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CalculateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CalculateResponse'
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CalculateResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+      security:
+      - Bearer: []
+      tags:
+      - calculate
+  /expressions:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ListAllExpressionsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+      security:
+      - Bearer: []
+      tags:
+      - expressions
+  /expressions/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ULID выражения
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetByIdExpressionResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+      security:
+      - Bearer: []
+      tags:
+      - expressions
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login to an existing account with username and password. Returns
+        token if successful.
+      parameters:
+      - description: User body object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+      summary: Login to an existing account
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new account with username and password. Returns token
+        if successful.
+      parameters:
+      - description: User body object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ApiError'
+      summary: Create a new account
+      tags:
+      - auth
+securityDefinitions:
+  Bearer:
+    description: '"Type ''Bearer TOKEN'' to correctly set the API Key"'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

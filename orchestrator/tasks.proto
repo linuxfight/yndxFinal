@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package tasksServer;
+option go_package = "orchestrator/internal/controllers/tasksServer";
+
+import "google/protobuf/empty.proto";
+
+message UpdateTaskRequest {
+  string id = 1;
+  string result = 2;
+}
+
+enum Operator {
+  ADDICTION = 0;
+  SUBTRACTION = 1;
+  MULTIPLICATION = 2;
+  DIVISION = 3;
+}
+
+message TaskResponse {
+  string id = 1;
+  string arg1 = 2;
+  string arg2 = 3;
+  int32 time = 4;
+  Operator operator = 5;
+}
+
+service Orchestrator {
+  rpc GetTask(google.protobuf.Empty) returns (stream TaskResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (google.protobuf.Empty);
+}

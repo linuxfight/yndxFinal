@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS expressions (
+    id VARCHAR(26) NOT NULL PRIMARY KEY,
+    expr TEXT NOT NULL UNIQUE,
+    res FLOAT NOT NULL,
+    finished BOOLEAN NOT NULL,
+    error BOOLEAN NOT NULL
+);

@@ -1,0 +1,18 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "sql/users/query.sql"
+    schema: "sql/users/schema.sql"
+    gen:
+      go:
+        package: "users"
+        out: "internal/db/users"
+        sql_package: "pgx/v5"
+  - engine: "postgresql"
+    queries: "sql/expressions/query.sql"
+    schema: "sql/expressions/schema.sql"
+    gen:
+      go:
+        package: "expressions"
+        out: "internal/db/expressions"
+        sql_package: "pgx/v5"
