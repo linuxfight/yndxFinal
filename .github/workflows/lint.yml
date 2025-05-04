@@ -14,12 +14,16 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-go@v5
         with:
           go-version: stable
+   
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v7
         with:
           version: v2.0
-	  working-directory: orchestrator
-      - run: cd orchestrator && go test -v ./... && cd ..
+          working-directory: orchestrator
+   
+      - name: run tests
+        run: cd orchestrator && go test -v ./...
