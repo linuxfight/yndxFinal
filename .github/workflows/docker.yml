@@ -21,7 +21,7 @@ jobs:
           # - dir: agent
           - dir: orchestrator
 
-    name: lint
+    name: build
     runs-on: self-hosted
 
     steps:
