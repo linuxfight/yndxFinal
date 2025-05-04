@@ -48,13 +48,13 @@ jobs:
           username: linuxfight
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: golangci-lint
+      - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.1
           working-directory: orchestrator
 
-      - name: run tests
+      - name: Run tests
         run: cd ${{ matrix.dir }} && go test -v ./... && cd ..
 
       - name: Extract metadata (tags, labels) for Docker
