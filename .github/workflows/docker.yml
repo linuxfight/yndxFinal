@@ -49,9 +49,9 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: v2.0
+          version: v2.1
           working-directory: orchestrator
 
       - name: run tests
