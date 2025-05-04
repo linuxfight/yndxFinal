@@ -1,0 +1,68 @@
+name: build
+on:
+  push:
+    paths-ignore:
+      - .gitignore
+      - README.md
+      - compose.yml
+      - .env
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          # - dir: agent
+          - dir: orchestrator
+
+    name: lint
+    runs-on: self-hosted
+
+    steps:
+      - name: Copy repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          username: linuxfight
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          version: v2.0
+          working-directory: orchestrator
+
+      - name: run tests
+        run: cd ${{ matrix.dir }} && go test -v ./... && cd ..
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ github.repository }}-${{ matrix.dir }}
+
+      - name: Build docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.dir }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ github.repository }}:buildcache
+          cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max

@@ -15,7 +15,7 @@ RUN find ./docs -type f -exec sed -i 's/localhost:8080/calc.lxft.tech/g' {} +
 
 RUN --mount=type=cache,target=/go/pkg/mod/ \
     --mount=type=bind,target=. \
-    go test -v ./... && CGO_ENABLED=0 GOARCH=$TARGETARCH go build -o /bin/server ./cmd/main.go
+    CGO_ENABLED=0 GOARCH=$TARGETARCH go build -o /bin/server ./cmd/main.go
 
 FROM alpine:latest AS final
 
