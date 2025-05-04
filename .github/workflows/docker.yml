@@ -25,6 +25,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Convert repository to lowercase
+        id: lowercase
+        run: |
+          lowercase_repo=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "repository=$lowercase_repo" >> $GITHUB_OUTPUT
+
       - name: Copy repository
         uses: actions/checkout@v4
 
@@ -55,7 +61,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ github.repository }}-${{ matrix.dir }}
+          images: ${{ steps.lowercase.outputs.repository }}-${{ matrix.dir }}
 
       - name: Build docker image
         uses: docker/build-push-action@v6
@@ -64,5 +70,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ steps.meta.outputs.tags }}:buildcache
+          cache-to: type=registry,ref=${{ steps.meta.outputs.tags }}:buildcache,mode=max
