@@ -69,7 +69,6 @@ func Encode(t Task) string {
 		case string:
 			return val
 		case float64:
-			// Format without decimal if it's a whole number
 			if val == float64(int(val)) {
 				return fmt.Sprintf("%d", int(val))
 			}

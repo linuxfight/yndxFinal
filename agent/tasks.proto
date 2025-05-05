@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package gen;
-option go_package = "agent/internal/controllers/tasks/gen";
+option go_package = "agent/internal/tasks/gen";
 
 import "google/protobuf/empty.proto";
 

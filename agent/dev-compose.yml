@@ -53,6 +53,28 @@ services:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
 
+  backend:
+    image: linuxfight/yndxfinal-orchestrator:main
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:9090:9090"
+    environment:
+      POSTGRES_CONN: "postgres://postgres:password@postgres:5432/db"
+      VALKEY_CONN: "valkey:6379"
+      OPERATION_TIME: "1111"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8080/startupz" ]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
 volumes:
   valkey-data:
   postgres-data:
