@@ -4,6 +4,7 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
+	"github.com/gofiber/fiber/v3/middleware/healthcheck"
 	"orchestrator/internal/controllers/auth"
 	"orchestrator/internal/controllers/expr"
 	jwtware "orchestrator/internal/controllers/middlewares/jwt"
@@ -32,6 +33,7 @@ func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *db.
 	}
 
 	// set up middlewares
+	app.Get(healthcheck.DefaultStartupEndpoint, healthcheck.NewHealthChecker())
 	app.Use(cors.New())
 	app.Use(recoverer.New())
 	app.Use(swagger.New(swagger.Config{
