@@ -24,7 +24,7 @@ func (ctl *Controller) list(ctx fiber.Ctx) error {
 	result := []dto.Expression{}
 
 	for _, expr := range exprs {
-		if task, _ := ctl.tasks.GetTask(ctx.Context(), expr.ID); task == nil && expr.Finished == false {
+		if task, _ := ctl.tasks.GetTask(ctx.Context(), expr.ID); task == nil && !expr.Finished {
 			expr.Finished = true
 			expr.Error = true
 			if err := ctl.exprRepo.Update(ctx.Context(), expressions.UpdateParams{

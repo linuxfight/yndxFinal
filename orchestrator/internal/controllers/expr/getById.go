@@ -26,7 +26,7 @@ func (ctl *Controller) GetById(ctx fiber.Ctx) error {
 
 	expr, err := ctl.exprRepo.GetById(ctx.Context(), id)
 	if err == nil {
-		if task, _ := ctl.tasks.GetTask(ctx.Context(), id); task == nil && expr.Finished == false {
+		if task, _ := ctl.tasks.GetTask(ctx.Context(), id); task == nil && !expr.Finished {
 			expr.Finished = true
 			expr.Error = true
 			if err := ctl.exprRepo.Update(ctx.Context(), expressions.UpdateParams{
