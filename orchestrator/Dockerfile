@@ -11,7 +11,8 @@ ARG TARGETARCH
 COPY . .
 # RUN go install github.com/swaggo/swag/cmd/swag@latest
 # RUN swag init -g cmd/main.go
-RUN find ./docs -type f -exec sed -i 's/localhost:8080/calc.lxft.tech/g' {} +
+# TODO: ENABLE IN PROD
+# RUN find ./docs -type f -exec sed -i 's/localhost:8080/calc.lxft.tech/g' {} +
 
 RUN --mount=type=cache,target=/go/pkg/mod/ \
     --mount=type=bind,target=. \
