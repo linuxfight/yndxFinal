@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/oklog/ulid/v2"
 	"orchestrator/internal/controllers/dto"
+	"orchestrator/internal/db/expressions"
 	"orchestrator/internal/utils"
 )
 
@@ -25,6 +26,18 @@ func (ctl *Controller) GetById(ctx fiber.Ctx) error {
 
 	expr, err := ctl.exprRepo.GetById(ctx.Context(), id)
 	if err == nil {
+		if task, _ := ctl.tasks.GetTask(ctx.Context(), id); task == nil && expr.Finished == false {
+			expr.Finished = true
+			expr.Error = true
+			if err := ctl.exprRepo.Update(ctx.Context(), expressions.UpdateParams{
+				Res:      0,
+				Finished: true,
+				Error:    true,
+				ID:       id,
+			}); err != nil {
+				return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
+			}
+		}
 		return ctx.Status(fiber.StatusOK).JSON(&dto.GetByIdExpressionResponse{Expression: dto.NewExpression(expr)})
 	}
 

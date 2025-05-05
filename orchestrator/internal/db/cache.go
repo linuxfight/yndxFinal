@@ -21,6 +21,7 @@ func (c *Cache) GetTasks(ctx context.Context) (*[]calc.Task, error) {
 	}
 
 	tasks := []calc.Task{}
+	tasksDone := 0
 	for _, item := range array {
 		id, err := item.ToString()
 		if err != nil {
@@ -32,7 +33,19 @@ func (c *Cache) GetTasks(ctx context.Context) (*[]calc.Task, error) {
 			return nil, err
 		}
 
+		if val, ok := task.Result.(string); ok {
+			if val == dto.Failed {
+				tasksDone++
+			}
+		} else {
+			tasksDone++
+		}
+
 		tasks = append(tasks, *task)
+	}
+
+	if len(tasks) == tasksDone {
+		return &[]calc.Task{}, c.Clear(ctx)
 	}
 
 	return &tasks, nil
@@ -62,10 +75,12 @@ func (c *Cache) SetTask(ctx context.Context, task *calc.Task) error {
 		return err
 	}
 
-	if err := c.Storage.Do(ctx, c.Storage.B().Expire().Key(task.ID).
-		Seconds(120).Build()).Error(); err != nil {
-		return err
-	}
+	/*
+		if err := c.Storage.Do(ctx, c.Storage.B().Expire().Key(task.ID).
+			Seconds(120).Build()).Error(); err != nil {
+			return err
+		}
+	*/
 
 	return nil
 }
@@ -120,6 +135,10 @@ func (c *Cache) UpdateTaskArgs(ctx context.Context, task *calc.Task) error {
 	}
 
 	return nil
+}
+
+func (c *Cache) Clear(ctx context.Context) error {
+	return c.Storage.Do(ctx, c.Storage.B().Flushdb().Build()).Error()
 }
 
 func NewCache(conn string) (*Cache, error) {

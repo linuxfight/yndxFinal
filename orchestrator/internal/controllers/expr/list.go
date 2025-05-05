@@ -3,6 +3,7 @@ package expr
 import (
 	"github.com/gofiber/fiber/v3"
 	"orchestrator/internal/controllers/dto"
+	"orchestrator/internal/db/expressions"
 	"orchestrator/internal/utils"
 )
 
@@ -15,14 +16,27 @@ import (
 // @Failure      500  {object}  dto.ApiError
 // @Router       /expressions [get]
 func (ctl *Controller) list(ctx fiber.Ctx) error {
-	expressions, err := ctl.exprRepo.GetAll(ctx.Context())
+	exprs, err := ctl.exprRepo.GetAll(ctx.Context())
 	if err != nil {
 		return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
 	}
 
 	result := []dto.Expression{}
 
-	for _, expr := range expressions {
+	for _, expr := range exprs {
+		if task, _ := ctl.tasks.GetTask(ctx.Context(), expr.ID); task == nil && expr.Finished == false {
+			expr.Finished = true
+			expr.Error = true
+			if err := ctl.exprRepo.Update(ctx.Context(), expressions.UpdateParams{
+				Res:      0,
+				Finished: true,
+				Error:    true,
+				ID:       expr.ID,
+			}); err != nil {
+				return utils.SendError(ctx, err.Error(), fiber.StatusInternalServerError)
+			}
+		}
+
 		result = append(result, dto.NewExpression(expr))
 	}
 
