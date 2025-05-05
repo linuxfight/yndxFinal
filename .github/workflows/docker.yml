@@ -71,6 +71,7 @@ jobs:
         with:
           context: ${{ matrix.dir }}
           push: true
+          platforms: linux/arm64,linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ steps.lowercase.outputs.repository }}-${{ matrix.dir }}:buildcache
