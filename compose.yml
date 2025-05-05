@@ -1,0 +1,90 @@
+services:
+  valkey:
+    image: valkey/valkey:alpine
+    volumes:
+      - valkey-data:/data
+    command: >
+      sh -c '
+        mkdir -p /usr/local/etc/valkey &&
+        echo "bind 0.0.0.0" > /usr/local/etc/valkey/valkey.conf &&
+        echo "appendonly yes" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "appendfsync everysec" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "databases 1" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "save 300 10" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "maxmemory 1gb" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "maxmemory-policy allkeys-lru" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "maxclients 10000" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "tcp-backlog 511" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "lazyfree-lazy-server-del yes" >> /usr/local/etc/valkey/valkey.conf &&
+        echo "user default on nopass ~* +@all" > /usr/local/etc/valkey/users.acl &&
+        valkey-server /usr/local/etc/valkey/valkey.conf --aclfile /usr/local/etc/valkey/users.acl
+      '
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.core.somaxconn: "511"
+    tty: true
+    stdin_open: true
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  postgres:
+    image: postgres:alpine
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    image: linuxfight/yndxfinal-orchestrator:main
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:9090:9090"
+    environment:
+      POSTGRES_CONN: "postgres://postgres:password@postgres:5432/db"
+      VALKEY_CONN: "valkey:6379"
+      OPERATION_TIME: "1111"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/startupz"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  agent:
+    image: linuxfight/yndxfinal-agent:main
+    environment:
+      API_ADDR: "backend:9090"
+      POWER: "1"
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  valkey-data:
+  postgres-data:

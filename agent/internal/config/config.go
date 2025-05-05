@@ -8,8 +8,7 @@ import (
 )
 
 const (
-	RequestTimeout   = 2 * time.Second
-	WorkerPoolBuffer = 20
+	RequestTimeout = 2 * time.Second
 )
 
 type Config struct {
