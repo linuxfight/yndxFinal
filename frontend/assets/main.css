@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/*
+@tailwind base;
+@tailwind components;
+*/
+
+@tailwind utilities;
+
+@font-face{
+    font-family: 'JetBrainsMono Regular';
+    src: url('assets/JetBrainsMono-Regular.woff2');
+}
+@font-face{
+    font-family: 'JetBrainsMono Medium';
+    src: url('assets/JetBrainsMono-Medium.woff2');
+}
+@font-face{
+    font-family: 'JetBrainsMono Bold';
+    src: url('assets/JetBrainsMono-Bold.woff2');
+}
+
+/* Optional: Set default font for all elements */
+body {
+    @apply font-mono; /* or font-mono if you chose that */
+}
+
+@theme static {
+    --color-dark: #282632;
+    --color-dark-2: #1E1C25;
+    --color-light: #e2e8f0;
+}

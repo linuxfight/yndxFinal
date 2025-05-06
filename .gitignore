@@ -1,3 +1,6 @@
+# frontend
+.wrangler
+
 # Created by https://www.toptal.com/developers/gitignore/api/goland,go,database,dotenv,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=goland,go,database,dotenv,macos
 
@@ -10,9 +13,6 @@
 *.sqlite3
 *.db-shm
 *.db-wal
-
-### dotenv ###
-.env
 
 ### Go ###
 # If you prefer the allow list template instead of the deny list, see community template:
@@ -201,7 +201,6 @@ logs
 *.log
 
 # Misc
-.DS_Store
 .fleet
 .idea
 
