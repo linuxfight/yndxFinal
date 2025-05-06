@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
@@ -12,7 +11,9 @@
     </div>
 
     <div class="max-w-4xl mx-auto rounded-xl p-4">
-      <img src="/assets/demo.gif" alt="gif" class="rounded-xl">
+      <a href="https://asciinema.org/a/s2WpEhe0GNK9FjDOvcjHGYupg" target="_blank">
+        <img src="https://asciinema.org/a/s2WpEhe0GNK9FjDOvcjHGYupg.svg" alt="asciinema">
+      </a>
     </div>
   </UContainer>
 </template>

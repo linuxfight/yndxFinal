@@ -18,14 +18,14 @@
         <InfoFeature
             link="https://calc-backend.lxft.tech/docs"
             title="Swagger (тык)"
-            text="Доступна документация API"
+            text="Документация API"
             icon="i-lucide-scroll-text"
         />
 
         <InfoFeature
             link="https://calc.lxft.tech"
             title="Деплой (тык)"
-            text="Доступно на https://calc.lxft.tech"
+            text="Доступно на тут"
             icon="i-lucide-cloud"
         />
 
@@ -33,7 +33,7 @@
             link="https://github.com/linuxfight/yndxFinal/actions"
             title="CI (тык)"
             icon="i-lucide-repeat"
-            text="Изменения проходят тесты и билд"
+            text="Тесты и билд"
         />
       </div>
     </section>
@@ -42,6 +42,8 @@
     <section id="demo" class="py-20 bg-light dark:bg-dark-2">
       <InfoDemo/>
     </section>
+
+    <InfoFooter/>
   </div>
 </template>
 
@@ -49,6 +51,7 @@
 import InfoDemo from "~/components/index/InfoDemo.vue";
 import InfoFeature from "~/components/index/InfoFeature.vue";
 import InfoHero from "~/components/index/InfoHero.vue";
+import InfoFooter from "~/components/index/InfoFooter.vue";
 </script>
 
 <style scoped>

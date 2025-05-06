@@ -34,14 +34,6 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxt/ui',
-
-    '@nuxtjs/color-mode'
-    // '@nuxtjs/tailwindcss'
-  ]
+  modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@nuxt/ui', // '@nuxtjs/tailwindcss'
+  '@nuxtjs/color-mode']
 })

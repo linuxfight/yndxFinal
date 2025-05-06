@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+const auth = useAuth();
 </script>
 
 <template>
@@ -11,22 +11,31 @@
       <p class="text-lg mb-8">
         API и веб-интерфейс для решения математических выражений
       </p>
-      <div class="flex flex-wrap gap-4">
-        <UButton variant="outline" size="lg" to="#demo">
-          Демо API
-          <template #trailing>
-            <UIcon name="i-lucide-play" />
-          </template>
+
+      <NuxtLink v-if="!auth.checkTokenExists()" to="/auth">
+        <UButton
+            icon="i-lucide-log-in"
+            color="neutral"
+            variant="outline"
+            class="text-2xl p-5 rounded-xl">
+          <h1>Авторизация</h1>
         </UButton>
-        <UButton>
-          FUNCTIONS
+      </NuxtLink>
+
+      <NuxtLink v-if="auth.checkTokenExists()" to="/calculate">
+        <UButton
+            icon="i-lucide-calculator"
+            color="neutral"
+            variant="outline"
+            class="text-2xl p-5 rounded-xl">
+          <h1>Вычислить</h1>
         </UButton>
-      </div>
+      </NuxtLink>
     </div>
     <div class="relative">
       <div class="bg-white p-4 rounded-xl shadow-xl">
         <img
-            src="https://placehold.co/600x400/e2e8f0/475569?text=Calculator+App+Screenshot"
+            src="/assets/demo.png"
             alt="Calculator App Screenshot"
             class="rounded-lg w-full"
         >
