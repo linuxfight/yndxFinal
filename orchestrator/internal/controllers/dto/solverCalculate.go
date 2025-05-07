@@ -5,5 +5,5 @@ type CalculateRequest struct {
 }
 
 type CalculateResponse struct {
-	Id string `json:"id" example:"928b303f-cfcc-46f4-ae24-aabb72bbb7d9"`
+	Id string `json:"id" example:"01JTE60CDWQ5R3QSWZBP8J6FG3"`
 }

@@ -8,12 +8,12 @@ import (
 )
 
 // login godoc
-// @Summary      Login to an existing account
-// @Description  Login to an existing account with username and password. Returns token if successful.
+// @Summary      Войти в аккаунт
+// @Description  Войти в аккаунт с помощью логина и пароля. Возвращает JWT API Token при успешном запросе
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        body body  dto.AuthRequest true  "User body object"
+// @Param        body body  dto.AuthRequest true  "Данные для входа"
 // @Success      200  {object}  dto.AuthResponse
 // @Failure      400  {object}  dto.ApiError
 // @Failure      401  {object}  dto.ApiError

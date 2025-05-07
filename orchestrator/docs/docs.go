@@ -125,7 +125,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "ULID выражения",
+                        "description": "01JTE60CDWQ5R3QSWZBP8J6FG3",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -155,7 +155,7 @@ const docTemplate = `{
         },
         "/login": {
             "post": {
-                "description": "Login to an existing account with username and password. Returns token if successful.",
+                "description": "Войти в аккаунт с помощью логина и пароля. Возвращает JWT API Token при успешном запросе",
                 "consumes": [
                     "application/json"
                 ],
@@ -165,10 +165,10 @@ const docTemplate = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "Login to an existing account",
+                "summary": "Войти в аккаунт",
                 "parameters": [
                     {
-                        "description": "User body object",
+                        "description": "Данные для входа",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -213,7 +213,7 @@ const docTemplate = `{
         },
         "/register": {
             "post": {
-                "description": "Create a new account with username and password. Returns token if successful.",
+                "description": "Создать новый аккаунт с помощью логина и пароля. Возвращает JWT API Token при успешном запросе",
                 "consumes": [
                     "application/json"
                 ],
@@ -223,10 +223,10 @@ const docTemplate = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "Create a new account",
+                "summary": "Зарегистрировать новый аккаунт",
                 "parameters": [
                     {
-                        "description": "User body object",
+                        "description": "Данные для регистрации",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -263,10 +263,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 500
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "error: nil ptr dereference"
                 }
             }
         },
@@ -285,7 +287,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDY2OTE0MjQsImlhdCI6MTc0NjYwNTAyNCwic3ViIjoiMDFKVEU1VE5URVZZREVQUzhHRUUwWUc0Qk0ifQ.yDYZBaEAgeAshF7zLSGNxVL8Q5P70YheQCXO68pEzHc"
                 }
             }
         },
@@ -306,7 +309,7 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string",
-                    "example": "928b303f-cfcc-46f4-ae24-aabb72bbb7d9"
+                    "example": "01JTE60CDWQ5R3QSWZBP8J6FG3"
                 }
             }
         },
@@ -315,10 +318,11 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string",
-                    "example": "928b303f-cfcc-46f4-ae24-aabb72bbb7d9"
+                    "example": "01JTE60CDWQ5R3QSWZBP8J6FG3"
                 },
                 "result": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 4
                 },
                 "status": {
                     "type": "string",
@@ -348,7 +352,7 @@ const docTemplate = `{
     },
     "securityDefinitions": {
         "Bearer": {
-            "description": "\"Type 'Bearer TOKEN' to correctly set the API Key\"",
+            "description": "\"Введите 'Bearer TOKEN' чтобы правильно использовать JWT API Token\"",
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

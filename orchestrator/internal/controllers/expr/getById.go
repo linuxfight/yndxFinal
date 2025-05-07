@@ -8,12 +8,13 @@ import (
 	"orchestrator/internal/utils"
 )
 
-// GetById @Summary      Получить выражение по ULID
+// GetById @Summary      Получить выражение по ID
+// @Description  Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает выражение при успешном запросе
 // @Tags         expressions
 // @Accept       json
 // @Produce      json
 // @Security Bearer
-// @Param        id path  string true  "ULID выражения"
+// @Param        id path  string true  "01JTE60CDWQ5R3QSWZBP8J6FG3"
 // @Success      200  {object}  dto.GetByIdExpressionResponse
 // @Failure      404  {object}  dto.ApiError
 // @Failure      422  {object}  dto.ApiError

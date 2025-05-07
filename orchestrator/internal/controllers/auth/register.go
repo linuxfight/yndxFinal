@@ -10,12 +10,12 @@ import (
 )
 
 // register godoc
-// @Summary      Create a new account
-// @Description  Create a new account with username and password. Returns token if successful.
+// @Summary      Зарегистрировать новый аккаунт
+// @Description  Создать новый аккаунт с помощью логина и пароля. Возвращает JWT API Token при успешном запросе
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        body body  dto.AuthRequest true  "User body object"
+// @Param        body body  dto.AuthRequest true  "Данные для регистрации"
 // @Success      201  {object}  dto.AuthResponse
 // @Failure      409  {object}  dto.ApiError
 // @Failure      500  {object}  dto.ApiError

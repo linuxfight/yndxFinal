@@ -11,8 +11,8 @@ type GetByIdExpressionResponse struct {
 }
 
 type Expression struct {
-	Id     string  `json:"id" example:"928b303f-cfcc-46f4-ae24-aabb72bbb7d9"`
-	Result float64 `json:"result"`
+	Id     string  `json:"id" example:"01JTE60CDWQ5R3QSWZBP8J6FG3"`
+	Result float64 `json:"result" example:"4"`
 	Status string  `json:"status" example:"DONE"`
 }
 

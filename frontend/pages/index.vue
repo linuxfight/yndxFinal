@@ -25,7 +25,7 @@
         <InfoFeature
             link="https://calc.lxft.tech"
             title="Деплой (тык)"
-            text="Доступно на тут"
+            text="Доступно тут"
             icon="i-lucide-cloud"
         />
 

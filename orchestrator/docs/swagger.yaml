@@ -3,8 +3,10 @@ definitions:
   dto.ApiError:
     properties:
       code:
+        example: 500
         type: integer
       message:
+        example: 'error: nil ptr dereference'
         type: string
     type: object
   dto.AuthRequest:
@@ -17,6 +19,7 @@ definitions:
   dto.AuthResponse:
     properties:
       token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDY2OTE0MjQsImlhdCI6MTc0NjYwNTAyNCwic3ViIjoiMDFKVEU1VE5URVZZREVQUzhHRUUwWUc0Qk0ifQ.yDYZBaEAgeAshF7zLSGNxVL8Q5P70YheQCXO68pEzHc
         type: string
     type: object
   dto.CalculateRequest:
@@ -30,15 +33,16 @@ definitions:
   dto.CalculateResponse:
     properties:
       id:
-        example: 928b303f-cfcc-46f4-ae24-aabb72bbb7d9
+        example: 01JTE60CDWQ5R3QSWZBP8J6FG3
         type: string
     type: object
   dto.Expression:
     properties:
       id:
-        example: 928b303f-cfcc-46f4-ae24-aabb72bbb7d9
+        example: 01JTE60CDWQ5R3QSWZBP8J6FG3
         type: string
       result:
+        example: 4
         type: number
       status:
         example: DONE
@@ -124,7 +128,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: ULID выражения
+      - description: 01JTE60CDWQ5R3QSWZBP8J6FG3
         in: path
         name: id
         required: true
@@ -152,10 +156,10 @@ paths:
     post:
       consumes:
       - application/json
-      description: Login to an existing account with username and password. Returns
-        token if successful.
+      description: Войти в аккаунт с помощью логина и пароля. Возвращает JWT API Token
+        при успешном запросе
       parameters:
-      - description: User body object
+      - description: Данные для входа
         in: body
         name: body
         required: true
@@ -184,17 +188,17 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.ApiError'
-      summary: Login to an existing account
+      summary: Войти в аккаунт
       tags:
       - auth
   /register:
     post:
       consumes:
       - application/json
-      description: Create a new account with username and password. Returns token
-        if successful.
+      description: Создать новый аккаунт с помощью логина и пароля. Возвращает JWT
+        API Token при успешном запросе
       parameters:
-      - description: User body object
+      - description: Данные для регистрации
         in: body
         name: body
         required: true
@@ -215,12 +219,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.ApiError'
-      summary: Create a new account
+      summary: Зарегистрировать новый аккаунт
       tags:
       - auth
 securityDefinitions:
   Bearer:
-    description: '"Type ''Bearer TOKEN'' to correctly set the API Key"'
+    description: '"Введите ''Bearer TOKEN'' чтобы правильно использовать JWT API Token"'
     in: header
     name: Authorization
     type: apiKey

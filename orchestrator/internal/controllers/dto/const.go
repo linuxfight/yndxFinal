@@ -1,10 +1,10 @@
 package dto
 
 const (
-	InvalidData     = "invalid data"
-	InvalidPassword = "invalid password"
-	NotFound        = "entry not found"
-	Conflict        = "data already exists"
+	InvalidData     = "Некорректние данные"
+	InvalidPassword = "Неправильный пароль"
+	NotFound        = "Запись не найдена"
+	Conflict        = "Запись уже существует"
 )
 
 const (

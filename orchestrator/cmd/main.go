@@ -26,7 +26,7 @@ import (
 // @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization
-// @description "Type 'Bearer TOKEN' to correctly set the API Key"
+// @description "Введите 'Bearer TOKEN' чтобы правильно использовать JWT API Token"
 func main() {
 	cfg := config.New()
 

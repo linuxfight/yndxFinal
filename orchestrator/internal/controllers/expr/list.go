@@ -8,6 +8,7 @@ import (
 )
 
 // list @Summary      Получить весь список выражений
+// @Description  Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает список выражений при успешном запросе
 // @Tags         expressions
 // @Accept       json
 // @Produce      json
