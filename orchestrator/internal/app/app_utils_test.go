@@ -20,10 +20,13 @@ func sendRequest(t *testing.T, client *http.Client, testCase test) {
 	t.Run(testCase.name, func(t *testing.T) {
 		var req *http.Request
 		var err error
-		if testCase.method == http.MethodPost {
+		switch testCase.method {
+		case http.MethodPost:
 			req, err = http.NewRequest(testCase.method, testCase.url, strings.NewReader(testCase.body))
-		} else if testCase.method == http.MethodGet {
+		case http.MethodGet:
 			req, err = http.NewRequest(testCase.method, testCase.url, nil)
+		default:
+			t.Fatalf("invalid method: %s", testCase.method)
 		}
 		require.NoError(t, err)
 
