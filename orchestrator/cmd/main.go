@@ -1,14 +1,8 @@
 package main
 
 import (
-	"context"
-	"github.com/gofiber/fiber/v3"
-	"github.com/gofiber/fiber/v3/log"
-	"github.com/jackc/pgx/v5"
+	"orchestrator/internal/app"
 	"orchestrator/internal/config"
-	"orchestrator/internal/controllers"
-	"orchestrator/internal/controllers/tasks"
-	"orchestrator/internal/db"
 	"os"
 	"os/signal"
 	"syscall"
@@ -29,68 +23,14 @@ import (
 // @description "Введите 'Bearer TOKEN' чтобы правильно использовать JWT API Token"
 func main() {
 	cfg := config.New()
-
-	// connect to db
-	cache, err := db.NewCache(cfg.ValkeyConn)
-	if err != nil {
-		panic(err)
-	}
-	log.Info("connected to cache")
-
-	userRepo, exprRepo, dbConn, err := db.NewSql(cfg.PostgresConn)
-	if err != nil {
-		if dbConn != nil {
-			if dbErr := dbConn.Close(context.Background()); dbErr != nil {
-				panic(dbErr)
-			}
-		}
-		panic(err)
-	}
-	log.Info("connected to database")
-
-	web := controllers.NewFiber(userRepo, exprRepo, cache)
-	stub := tasks.NewGrpc(cache, exprRepo, cfg.OperationTime)
+	a := app.New(cfg)
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	listenCfg := fiber.ListenConfig{
-		EnablePrefork:         false,
-		DisableStartupMessage: true,
-	}
-
-	log.Info("started listening on port 8080")
-
-	go func() {
-		// start listening
-		if err := web.Listen(":8080", listenCfg); err != nil {
-			db.CloseConnections(dbConn, cache.Storage)
-			panic(err)
-		}
-	}()
-
-	log.Info("started listening on port 9090")
-
-	go func() {
-		err := stub.Listen()
-		if err != nil {
-			db.CloseConnections(dbConn, cache.Storage)
-			panic(err)
-		}
-	}()
+	a.Start()
 
 	<-sigChan
-	shutdown(web, dbConn, cache)
-}
 
-func shutdown(app *fiber.App, dbConn *pgx.Conn, cache *db.Cache) {
-	err := app.Shutdown()
-	if err != nil {
-		panic(err)
-	}
-
-	db.CloseConnections(dbConn, cache.Storage)
-
-	log.Info("shutdown complete")
-	os.Exit(0)
+	a.Stop()
 }

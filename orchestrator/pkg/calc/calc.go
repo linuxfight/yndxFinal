@@ -64,20 +64,6 @@ func Decode(task string) (*Task, error) {
 }
 
 func Encode(t Task) string {
-	toString := func(v interface{}) string {
-		switch val := v.(type) {
-		case string:
-			return val
-		case float64:
-			if val == float64(int(val)) {
-				return fmt.Sprintf("%d", int(val))
-			}
-			return fmt.Sprintf("%g", val)
-		default:
-			return fmt.Sprintf("%v", val)
-		}
-	}
-
 	return fmt.Sprintf("%s;%s;%s;%s;%s",
 		toString(t.ID),
 		toString(t.Arg1),
@@ -89,6 +75,10 @@ func Encode(t Task) string {
 
 // ParseExpression parses a mathematical expression into a sequence of tasksStorage
 func ParseExpression(expression string) ([]Task, error) {
+	if err := validate(expression); err != nil {
+		return nil, err
+	}
+
 	exprAst, err := parser.ParseExpr(expression)
 	if err != nil {
 		return nil, fmt.Errorf("parsing error: %w", err)
@@ -101,6 +91,20 @@ func ParseExpression(expression string) ([]Task, error) {
 	}
 
 	return tasks, nil
+}
+
+func validate(expression string) error {
+	allowed := map[rune]struct{}{
+		'0': {}, '1': {}, '2': {}, '3': {}, '4': {}, '5': {}, '6': {}, '7': {}, '8': {}, '9': {},
+		'.': {}, '+': {}, '-': {}, '*': {}, '/': {}, '(': {}, ')': {}, // TODO: add later '^': {}, '!': {}, '%': {},
+	}
+
+	for _, char := range expression {
+		if _, ok := allowed[char]; !ok {
+			return fmt.Errorf("invalid character: %c", char)
+		}
+	}
+	return nil
 }
 
 // processNode recursively processes AST nodes and creates tasksStorage
@@ -176,4 +180,18 @@ func createTask(tasks *[]Task, left, right interface{}, operation string) (strin
 		Result:    dto.Processing,
 	})
 	return taskID, nil
+}
+
+func toString(v interface{}) string {
+	switch val := v.(type) {
+	case string:
+		return val
+	case float64:
+		if val == float64(int(val)) {
+			return fmt.Sprintf("%d", int(val))
+		}
+		return fmt.Sprintf("%g", val)
+	default:
+		return fmt.Sprintf("%v", val)
+	}
 }

@@ -16,13 +16,17 @@ import (
 // @Security Bearer
 // @Param        id path  string true  "01JTE60CDWQ5R3QSWZBP8J6FG3"
 // @Success      200  {object}  dto.GetByIdExpressionResponse
+// @Failure      400  {object}  dto.ApiError
+// @Failure      403  {object}  dto.ApiError
 // @Failure      404  {object}  dto.ApiError
-// @Failure      422  {object}  dto.ApiError
 // @Router       /expressions/{id} [get]
 func (ctl *Controller) GetById(ctx fiber.Ctx) error {
 	id := ctx.Params("id")
-	if _, err := ulid.Parse(id); err != nil {
-		return utils.SendError(ctx, dto.InvalidData, fiber.StatusUnprocessableEntity)
+	if len(id) != 26 {
+		return utils.SendError(ctx, dto.InvalidData, fiber.StatusBadRequest)
+	}
+	if _, err := ulid.ParseStrict(id); err != nil {
+		return utils.SendError(ctx, dto.InvalidData, fiber.StatusBadRequest)
 	}
 
 	expr, err := ctl.exprRepo.GetById(ctx.Context(), id)

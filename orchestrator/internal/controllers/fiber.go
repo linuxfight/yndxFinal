@@ -52,7 +52,7 @@ func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *db.
 	// set up expr
 	authWare := jwtware.New(jwtware.Config{
 		ErrorHandler: func(ctx fiber.Ctx, err error) error {
-			return utils.SendError(ctx, err.Error(), fiber.StatusUnauthorized)
+			return utils.SendError(ctx, err.Error(), fiber.StatusForbidden)
 		},
 		SigningKey: jwtware.SigningKey{
 			JWTAlg: jwtware.HS256, // HMAC256 signing method

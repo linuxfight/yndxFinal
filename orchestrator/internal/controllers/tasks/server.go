@@ -35,6 +35,10 @@ func (s *TasksServer) Listen() error {
 	return nil
 }
 
+func (s *TasksServer) Close() {
+	s.server.GracefulStop()
+}
+
 func (s *TasksServer) GetTask(_ *emptypb.Empty, stream grpc.ServerStreamingServer[gen.TaskResponse]) error {
 	// Get tasks from cache
 	tasks, err := s.cache.GetTasks(context.Background())

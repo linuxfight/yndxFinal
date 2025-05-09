@@ -14,6 +14,7 @@ import (
 // @Produce      json
 // @Security Bearer
 // @Success      200  {object}  dto.ListAllExpressionsResponse
+// @Success      403  {object}  dto.ApiError
 // @Failure      500  {object}  dto.ApiError
 // @Router       /expressions [get]
 func (ctl *Controller) list(ctx fiber.Ctx) error {

@@ -19,6 +19,8 @@ import (
 // @Param        body body  dto.CalculateRequest true  "Объект, содержащий в себе выражение"
 // @Success      200  {object}  dto.CalculateResponse
 // @Success      201  {object}  dto.CalculateResponse
+// @Failure      400  {object}  dto.ApiError
+// @Failure      403  {object}  dto.ApiError
 // @Failure      422  {object}  dto.ApiError
 // @Failure      500  {object}  dto.ApiError
 // @Router       /calculate [post]
@@ -39,7 +41,7 @@ func (ctl *Controller) calculate(ctx fiber.Ctx) error {
 	id := ulid.Make().String()
 	tasks, err := calc.ParseExpression(body.Expression)
 	if err != nil {
-		return utils.SendError(ctx, dto.InvalidData, fiber.StatusUnprocessableEntity)
+		return utils.SendError(ctx, dto.InvalidData, fiber.StatusBadRequest)
 	}
 
 	if err := ctl.exprRepo.Create(ctx.Context(), expressions.CreateParams{

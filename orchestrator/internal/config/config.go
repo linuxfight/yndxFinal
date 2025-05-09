@@ -8,6 +8,12 @@ import (
 type Config struct {
 	ValkeyConn   string
 	PostgresConn string
+	JwtSecret    string
+
+	AddictionTime      int
+	SubstractionTime   int
+	MultiplicationTime int
+	DivisionTime       int
 
 	OperationTime int
 }
@@ -31,6 +37,12 @@ func New() *Config {
 			panic(err)
 		}
 	}
+
+	// TODO: TIME_ADDITION_MS
+	// TODO: TIME_SUBTRACTION_MS
+	// TODO: TIME_MULTIPLICATIONS_MS
+	// TODO: TIME_DIVISIONS_MS
+	// TODO: port to clearenv
 
 	return &Config{
 		ValkeyConn:    valkeyConn,

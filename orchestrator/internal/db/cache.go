@@ -75,21 +75,8 @@ func (c *Cache) SetTask(ctx context.Context, task *calc.Task) error {
 		return err
 	}
 
-	/*
-		if err := c.Storage.Do(ctx, c.Storage.B().Expire().Key(task.ID).
-			Seconds(120).Build()).Error(); err != nil {
-			return err
-		}
-	*/
-
 	return nil
 }
-
-/*
-func (c *Cache) DeleteTask(ctx context.Context, id string) error {
-	return c.Storage.Do(ctx, c.Storage.B().Del().Key(id).Build()).Error()
-}
-*/
 
 func (c *Cache) UpdateTaskArgs(ctx context.Context, task *calc.Task) error {
 	hasErr := false

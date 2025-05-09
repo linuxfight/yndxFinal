@@ -26,6 +26,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
+                "description": "Добавить математическое выражение из чисел, знаков [+, -, *, /, (, )] в очередь на выполнение. Возвращает ULID ID при успешном запросе",
                 "consumes": [
                     "application/json"
                 ],
@@ -59,6 +60,18 @@ const docTemplate = `{
                             "$ref": "#/definitions/dto.CalculateResponse"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiError"
+                        }
+                    },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
@@ -81,6 +94,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
+                "description": "Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает список выражений при успешном запросе",
                 "consumes": [
                     "application/json"
                 ],
@@ -95,6 +109,12 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dto.ListAllExpressionsResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiError"
                         }
                     },
                     "500": {
@@ -113,6 +133,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
+                "description": "Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает выражение при успешном запросе",
                 "consumes": [
                     "application/json"
                 ],
@@ -138,14 +159,20 @@ const docTemplate = `{
                             "$ref": "#/definitions/dto.GetByIdExpressionResponse"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/dto.ApiError"
                         }
                     },
-                    "422": {
-                        "description": "Unprocessable Entity",
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/dto.ApiError"
                         }
@@ -202,6 +229,12 @@ const docTemplate = `{
                             "$ref": "#/definitions/dto.ApiError"
                         }
                     },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiError"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -242,8 +275,20 @@ const docTemplate = `{
                             "$ref": "#/definitions/dto.AuthResponse"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiError"
+                        }
+                    },
                     "409": {
                         "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiError"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/dto.ApiError"
                         }
