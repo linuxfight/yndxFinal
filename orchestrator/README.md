@@ -12,6 +12,10 @@
 ├── go.mod
 ├── go.sum
 ├── internal
+│ ├── app
+│ │ ├── app.go
+│ │ ├── app_test.go
+│ │ └── app_utils_test.go
 │ ├── config
 │ │ └── config.go
 │ ├── controllers
@@ -21,7 +25,8 @@
 │ │ │ ├── password.go
 │ │ │ ├── password_test.go
 │ │ │ ├── register.go
-│ │ │ └── utils.go
+│ │ │ ├── utils.go
+│ │ │ └── utils_test.go
 │ │ ├── dto
 │ │ │ ├── auth.go
 │ │ │ ├── const.go
@@ -59,6 +64,7 @@
 │ │     └── utils.go
 │ ├── db
 │ │ ├── cache.go
+│ │ ├── cache_test.go
 │ │ ├── connection.go
 │ │ ├── expressions
 │ │ │ ├── db.go
@@ -69,7 +75,8 @@
 │ │     ├── models.go
 │ │     └── query.sql.go
 │ └── utils
-│     └── fiber.go
+│     ├── fiber.go
+│     └── fiber_test.go
 ├── pkg
 │ └── calc
 │     ├── calc.go
