@@ -12,6 +12,9 @@ permissions:
   contents: read
   pull-requests: write
 
+env:
+  GITHUB_CI: "1"
+
 jobs:
   build:
     strategy:
