@@ -4,8 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/oklog/ulid/v2"
+	"github.com/stretchr/testify/require"
 	"net/http"
 	"orchestrator/internal/config"
+	"os"
+	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -27,6 +31,11 @@ const (
 
 func TestApp(t *testing.T) {
 	ctx := context.Background()
+
+	_, filename, _, _ := runtime.Caller(0)
+	rootDir := filepath.Join(filepath.Dir(filename), "../..")
+	err := os.Chdir(rootDir)
+	require.NoError(t, err)
 
 	valkey, postgres := createDb(t, ctx)
 
