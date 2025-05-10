@@ -101,7 +101,7 @@ export type GetExpressionsByIdData = {
     body?: never;
     path: {
         /**
-         * ULID выражения
+         * 01JTE60CDWQ5R3QSWZBP8J6FG3
          */
         id: string;
     };
@@ -133,7 +133,7 @@ export type GetExpressionsByIdResponse = GetExpressionsByIdResponses[keyof GetEx
 
 export type PostLoginData = {
     /**
-     * User body object
+     * Данные для входа
      */
     body: DtoAuthRequest;
     path?: never;
@@ -173,7 +173,7 @@ export type PostLoginResponse = PostLoginResponses[keyof PostLoginResponses];
 
 export type PostRegisterData = {
     /**
-     * User body object
+     * Данные для регистрации
      */
     body: DtoAuthRequest;
     path?: never;

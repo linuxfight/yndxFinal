@@ -62,8 +62,8 @@ export const getExpressionsById = <ThrowOnError extends boolean = false>(options
 };
 
 /**
- * Login to an existing account
- * Login to an existing account with username and password. Returns token if successful.
+ * Войти в аккаунт
+ * Войти в аккаунт с помощью логина и пароля. Возвращает JWT API Token при успешном запросе
  */
 export const postLogin = <ThrowOnError extends boolean = false>(options: Options<PostLoginData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).post<PostLoginResponse, PostLoginError, ThrowOnError>({
@@ -77,8 +77,8 @@ export const postLogin = <ThrowOnError extends boolean = false>(options: Options
 };
 
 /**
- * Create a new account
- * Create a new account with username and password. Returns token if successful.
+ * Зарегистрировать новый аккаунт
+ * Создать новый аккаунт с помощью логина и пароля. Возвращает JWT API Token при успешном запросе
  */
 export const postRegister = <ThrowOnError extends boolean = false>(options: Options<PostRegisterData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).post<PostRegisterResponse, PostRegisterError, ThrowOnError>({

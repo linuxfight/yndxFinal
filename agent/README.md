@@ -1,11 +1,5 @@
 # Агент
 
-# Разработка
-1. Установите NodeJS (https://nodejs.org/)
-```shell
-go run cmd/main.go
-```
-
 # Структура проекта
 ```shell
 .
