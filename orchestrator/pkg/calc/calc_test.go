@@ -116,8 +116,8 @@ func TestDecodeEncode(t *testing.T) {
 				require.Len(t, parts, 5)
 
 				// Check integer formatting
-				assert.Equal(t, toString(tt.roundTrip.Arg1), toString(parts[1]))
-				assert.Equal(t, toString(tt.roundTrip.Result), toString(parts[4]))
+				assert.Equal(t, ToString(tt.roundTrip.Arg1), ToString(parts[1]))
+				assert.Equal(t, ToString(tt.roundTrip.Result), ToString(parts[4]))
 
 				// Test round trip decoding
 				decoded, err := Decode(encoded)

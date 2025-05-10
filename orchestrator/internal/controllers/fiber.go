@@ -14,23 +14,15 @@ import (
 	"orchestrator/internal/db/expressions"
 	"orchestrator/internal/db/users"
 	"orchestrator/internal/utils"
-	"os"
 )
 
-const testingSecret = "not_v3ry_s3cR3T"
-
-func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *db.Cache) *fiber.App {
+func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *db.Cache, jwtSecret string) *fiber.App {
 	// create fiber app
 	cfg := fiber.Config{
 		JSONDecoder: sonic.Unmarshal,
 		JSONEncoder: sonic.Marshal,
 	}
 	app := fiber.New(cfg)
-
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		jwtSecret = testingSecret
-	}
 
 	// set up middlewares
 	app.Get(healthcheck.DefaultStartupEndpoint, healthcheck.NewHealthChecker())

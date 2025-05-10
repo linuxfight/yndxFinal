@@ -15,7 +15,7 @@ var listenConfig = fiber.ListenConfig{DisableStartupMessage: true}
 
 type App struct {
 	web   *fiber.App
-	stub  *tasks.TasksServer
+	stub  *tasks.Server
 	db    *pgx.Conn
 	cache *db.Cache
 }
@@ -70,8 +70,8 @@ func New(cfg *config.Config) *App {
 	}
 	log.Info("connected to database")
 
-	web := controllers.NewFiber(userRepo, exprRepo, cache)
-	stub := tasks.NewGrpc(cache, exprRepo, cfg.OperationTime)
+	web := controllers.NewFiber(userRepo, exprRepo, cache, cfg.JwtSecret)
+	stub := tasks.NewGrpc(cache, exprRepo, cfg)
 
 	return &App{
 		web:   web,

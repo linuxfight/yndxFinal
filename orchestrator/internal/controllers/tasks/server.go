@@ -2,29 +2,30 @@ package tasks
 
 import (
 	"context"
-	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net"
+	"orchestrator/internal/config"
 	"orchestrator/internal/controllers/dto"
 	"orchestrator/internal/controllers/tasks/gen"
 	"orchestrator/internal/db"
 	"orchestrator/internal/db/expressions"
+	"orchestrator/pkg/calc"
 	"strconv"
 )
 
-type TasksServer struct {
+type Server struct {
 	gen.UnimplementedOrchestratorServer
 
 	server *grpc.Server
 	cache  *db.Cache
 	expr   *expressions.Queries
 
-	limit int
+	cfg *config.Config
 }
 
-func (s *TasksServer) Listen() error {
+func (s *Server) Listen() error {
 	lis, err := net.Listen("tcp", ":9090")
 	if err != nil {
 		return err
@@ -35,11 +36,11 @@ func (s *TasksServer) Listen() error {
 	return nil
 }
 
-func (s *TasksServer) Close() {
+func (s *Server) Close() {
 	s.server.GracefulStop()
 }
 
-func (s *TasksServer) GetTask(_ *emptypb.Empty, stream grpc.ServerStreamingServer[gen.TaskResponse]) error {
+func (s *Server) GetTask(_ *emptypb.Empty, stream grpc.ServerStreamingServer[gen.TaskResponse]) error {
 	// Get tasks from cache
 	tasks, err := s.cache.GetTasks(context.Background())
 	if err != nil {
@@ -65,9 +66,9 @@ func (s *TasksServer) GetTask(_ *emptypb.Empty, stream grpc.ServerStreamingServe
 
 		resp.Operator = getOperator(item)
 		resp.Id = item.ID
-		resp.Arg1 = fmt.Sprintf("%v", item.Arg1)
-		resp.Arg2 = fmt.Sprintf("%v", item.Arg2)
-		resp.Time = int32(s.limit)
+		resp.Arg1 = calc.ToString(item.Arg1)
+		resp.Arg2 = calc.ToString(item.Arg2)
+		resp.Time = s.cfg.GetOperationTime(resp.Operator)
 
 		if err := stream.Send(resp); err != nil {
 			return err
@@ -77,7 +78,7 @@ func (s *TasksServer) GetTask(_ *emptypb.Empty, stream grpc.ServerStreamingServe
 	return nil
 }
 
-func (s *TasksServer) UpdateTask(ctx context.Context, req *gen.UpdateTaskRequest) (*emptypb.Empty, error) {
+func (s *Server) UpdateTask(ctx context.Context, req *gen.UpdateTaskRequest) (*emptypb.Empty, error) {
 	task, err := s.cache.GetTask(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -110,13 +111,13 @@ func (s *TasksServer) UpdateTask(ctx context.Context, req *gen.UpdateTaskRequest
 	return &emptypb.Empty{}, nil
 }
 
-func NewGrpc(storage *db.Cache, expr *expressions.Queries, limit int) *TasksServer {
+func NewGrpc(storage *db.Cache, expr *expressions.Queries, cfg *config.Config) *Server {
 	server := grpc.NewServer()
-	ctl := TasksServer{
+	ctl := Server{
 		cache:  storage,
 		server: server,
 		expr:   expr,
-		limit:  limit,
+		cfg:    cfg,
 	}
 	gen.RegisterOrchestratorServer(server, &ctl)
 	reflection.Register(server)

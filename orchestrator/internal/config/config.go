@@ -1,52 +1,42 @@
 package config
 
 import (
-	"os"
-	"strconv"
+	"github.com/ilyakaznacheev/cleanenv"
+	"log"
+	"orchestrator/internal/controllers/tasks/gen"
 )
 
 type Config struct {
-	ValkeyConn   string
-	PostgresConn string
-	JwtSecret    string
+	ValkeyConn   string `env:"VALKEY_CONN" env-default:"127.0.0.1:6379"`
+	PostgresConn string `env:"POSTGRES_CONN" env-default:"postgres://postgres:password@localhost:5432/db"`
+	JwtSecret    string `env:"JWT_SECRET" env-default:"not_v3ry_s3cR3T"`
 
-	AddictionTime      int
-	SubstractionTime   int
-	MultiplicationTime int
-	DivisionTime       int
+	AddictionTime      int `env:"TIME_ADDITION_MS" env-default:"1000"`
+	SubstractionTime   int `env:"TIME_SUBTRACTION_MS" env-default:"1000"`
+	MultiplicationTime int `env:"TIME_MULTIPLICATIONS_MS" env-default:"1000"`
+	DivisionTime       int `env:"TIME_DIVISIONS_MS" env-default:"1000"`
+}
 
-	OperationTime int
+func (cfg *Config) GetOperationTime(op gen.Operator) int32 {
+	switch op {
+	case gen.Operator_ADDICTION:
+		return int32(cfg.AddictionTime)
+	case gen.Operator_SUBTRACTION:
+		return int32(cfg.SubstractionTime)
+	case gen.Operator_MULTIPLICATION:
+		return int32(cfg.MultiplicationTime)
+	case gen.Operator_DIVISION:
+		return int32(cfg.DivisionTime)
+	}
+
+	log.Panicf("invalid op: %s", op)
+	return 0
 }
 
 func New() *Config {
-	valkeyConn := os.Getenv("VALKEY_CONN")
-	if valkeyConn == "" {
-		valkeyConn = "127.0.0.1:6379"
+	var cfg Config
+	if err := cleanenv.ReadEnv(&cfg); err != nil {
+		panic(err)
 	}
-
-	postgresConn := os.Getenv("POSTGRES_CONN")
-	if postgresConn == "" {
-		postgresConn = "postgres://postgres:password@localhost:5432/db"
-	}
-
-	operationTime := 1000
-	var err error
-	operationTimeStr := os.Getenv("OPERATION_TIME")
-	if operationTimeStr != "" {
-		if operationTime, err = strconv.Atoi(operationTimeStr); err != nil {
-			panic(err)
-		}
-	}
-
-	// TODO: TIME_ADDITION_MS
-	// TODO: TIME_SUBTRACTION_MS
-	// TODO: TIME_MULTIPLICATIONS_MS
-	// TODO: TIME_DIVISIONS_MS
-	// TODO: port to clearenv
-
-	return &Config{
-		ValkeyConn:    valkeyConn,
-		PostgresConn:  postgresConn,
-		OperationTime: operationTime,
-	}
+	return &cfg
 }

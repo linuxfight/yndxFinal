@@ -65,11 +65,11 @@ func Decode(task string) (*Task, error) {
 
 func Encode(t Task) string {
 	return fmt.Sprintf("%s;%s;%s;%s;%s",
-		toString(t.ID),
-		toString(t.Arg1),
-		toString(t.Arg2),
-		toString(t.Operation),
-		toString(t.Result),
+		ToString(t.ID),
+		ToString(t.Arg1),
+		ToString(t.Arg2),
+		ToString(t.Operation),
+		ToString(t.Result),
 	)
 }
 
@@ -182,7 +182,7 @@ func createTask(tasks *[]Task, left, right interface{}, operation string) (strin
 	return taskID, nil
 }
 
-func toString(v interface{}) string {
+func ToString(v interface{}) string {
 	switch val := v.(type) {
 	case string:
 		return val

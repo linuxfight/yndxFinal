@@ -60,14 +60,14 @@ func TestApp(t *testing.T) {
 
 	app.Start()
 
-	tests := generateTests(t, httpClient)
+	tests := generateHttpTests(t, httpClient)
 
 	for _, testCase := range tests {
 		sendRequest(t, httpClient, testCase)
 	}
 }
 
-func generateTests(t *testing.T, client *http.Client) []test {
+func generateHttpTests(t *testing.T, client *http.Client) []test {
 	authTests := []test{
 		// register
 		// @Success      201
