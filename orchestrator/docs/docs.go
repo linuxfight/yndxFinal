@@ -339,9 +339,6 @@ const docTemplate = `{
         },
         "dto.CalculateRequest": {
             "type": "object",
-            "required": [
-                "expression"
-            ],
             "properties": {
                 "expression": {
                     "type": "string",
@@ -361,6 +358,10 @@ const docTemplate = `{
         "dto.Expression": {
             "type": "object",
             "properties": {
+                "expression": {
+                    "type": "string",
+                    "example": "2+2"
+                },
                 "id": {
                     "type": "string",
                     "example": "01JTE60CDWQ5R3QSWZBP8J6FG3"

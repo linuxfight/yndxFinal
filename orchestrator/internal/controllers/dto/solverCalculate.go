@@ -1,7 +1,7 @@
 package dto
 
 type CalculateRequest struct {
-	Expression string `json:"expression" validate:"expression,required" example:"2+2"`
+	Expression string `json:"expression" example:"2+2"`
 }
 
 type CalculateResponse struct {

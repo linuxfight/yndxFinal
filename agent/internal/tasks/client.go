@@ -8,7 +8,11 @@ import (
 )
 
 func NewClient(addr string) (*grpc.ClientConn, gen.OrchestratorClient) {
-	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(addr,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithUnaryInterceptor(PanicUnaryClientInterceptor),
+		grpc.WithStreamInterceptor(PanicStreamClientInterceptor),
+	)
 	if err != nil {
 		log.Panic(err)
 	}

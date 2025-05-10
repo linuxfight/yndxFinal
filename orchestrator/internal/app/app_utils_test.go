@@ -16,6 +16,23 @@ import (
 	"time"
 )
 
+type test struct {
+	name     string
+	url      string
+	method   string
+	body     string
+	auth     string
+	status   int
+	response string
+}
+
+const (
+	loginUrl       = "http://localhost:8080/api/v1/login"
+	registerUrl    = "http://localhost:8080/api/v1/register"
+	calculateUrl   = "http://localhost:8080/api/v1/calculate"
+	expressionsUrl = "http://localhost:8080/api/v1/expressions"
+)
+
 func sendRequest(t *testing.T, client *http.Client, testCase test) {
 	t.Run(testCase.name, func(t *testing.T) {
 		var req *http.Request
@@ -39,6 +56,15 @@ func sendRequest(t *testing.T, client *http.Client, testCase test) {
 
 		if resp.StatusCode != testCase.status {
 			t.Errorf("expected status code %d but got %d", testCase.status, resp.StatusCode)
+		}
+
+		if testCase.response != "" {
+			bytes, err := io.ReadAll(resp.Body)
+			require.NoError(t, err)
+
+			if testCase.response != string(bytes) {
+				t.Errorf("expected response %s but got %s", testCase.response, string(bytes))
+			}
 		}
 	})
 }
@@ -64,10 +90,8 @@ func getToken(t *testing.T, client *http.Client) string {
 	return body.Token
 }
 
-func getTaskId(t *testing.T, client *http.Client, header string) string {
-	calcBody := `{"expression": "52+52"}`
-
-	req, err := http.NewRequest(http.MethodPost, calculateUrl, strings.NewReader(calcBody))
+func getTaskId(t *testing.T, client *http.Client, header, expression string) string {
+	req, err := http.NewRequest(http.MethodPost, calculateUrl, strings.NewReader(expression))
 	require.NoError(t, err)
 	req.Header.Set("Authorization", header)
 	resp, err := client.Do(req)

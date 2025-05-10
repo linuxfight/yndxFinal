@@ -1,38 +1,24 @@
 package config
 
 import (
+	"github.com/ilyakaznacheev/cleanenv"
 	"log"
-	"os"
-	"strconv"
 	"time"
 )
 
 const (
-	RequestTimeout = 2 * time.Second
+	RequestTimeout = 1 * time.Second
 )
 
 type Config struct {
-	ApiAddr        string
-	ComputingPower int
+	ApiAddr        string `env:"API_ADDR" env-default:"localhost:9090"`
+	ComputingPower int    `env:"COMPUTING_POWER" env-default:"1"`
 }
 
 func New() *Config {
-	apiUrl := os.Getenv("API_ADDR")
-	if apiUrl == "" {
-		apiUrl = "localhost:9090"
+	var cfg Config
+	if err := cleanenv.ReadEnv(&cfg); err != nil {
+		log.Panicf("failed to read environment variables: %v", err)
 	}
-
-	powerStr := os.Getenv("POWER")
-	power := 1
-	if powerStr != "" {
-		var err error
-		if power, err = strconv.Atoi(powerStr); err != nil {
-			log.Panicf("Error converting POWER to int: %s\n", err)
-		}
-	}
-
-	return &Config{
-		ApiAddr:        apiUrl,
-		ComputingPower: power,
-	}
+	return &cfg
 }

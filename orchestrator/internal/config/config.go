@@ -36,7 +36,7 @@ func (cfg *Config) GetOperationTime(op gen.Operator) int32 {
 func New() *Config {
 	var cfg Config
 	if err := cleanenv.ReadEnv(&cfg); err != nil {
-		panic(err)
+		log.Panicf("failed to read environment variables: %v", err)
 	}
 	return &cfg
 }

@@ -27,8 +27,6 @@ definitions:
       expression:
         example: 2+2
         type: string
-    required:
-    - expression
     type: object
   dto.CalculateResponse:
     properties:
@@ -38,6 +36,9 @@ definitions:
     type: object
   dto.Expression:
     properties:
+      expression:
+        example: 2+2
+        type: string
       id:
         example: 01JTE60CDWQ5R3QSWZBP8J6FG3
         type: string

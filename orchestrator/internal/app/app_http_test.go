@@ -13,23 +13,7 @@ import (
 	"testing"
 )
 
-type test struct {
-	name   string
-	url    string
-	method string
-	body   string
-	auth   string
-	status int
-}
-
-const (
-	loginUrl       = "http://localhost:8080/api/v1/login"
-	registerUrl    = "http://localhost:8080/api/v1/register"
-	calculateUrl   = "http://localhost:8080/api/v1/calculate"
-	expressionsUrl = "http://localhost:8080/api/v1/expressions"
-)
-
-func TestApp(t *testing.T) {
+func TestHttpApp(t *testing.T) {
 	ctx := context.Background()
 
 	_, filename, _, _ := runtime.Caller(0)
@@ -156,7 +140,7 @@ func generateHttpTests(t *testing.T, client *http.Client) []test {
 
 	token := getToken(t, client)
 	header := fmt.Sprintf("Bearer %s", token)
-	id := getTaskId(t, client, header)
+	id := getTaskId(t, client, header, `{"expression": "2+52"}`)
 
 	calcTests := []test{
 		// calc

@@ -2,6 +2,7 @@ package tasks
 
 import (
 	"context"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -112,7 +113,10 @@ func (s *Server) UpdateTask(ctx context.Context, req *gen.UpdateTaskRequest) (*e
 }
 
 func NewGrpc(storage *db.Cache, expr *expressions.Queries, cfg *config.Config) *Server {
-	server := grpc.NewServer()
+	server := grpc.NewServer(
+		grpc.UnaryInterceptor(recovery.UnaryServerInterceptor()),
+		grpc.StreamInterceptor(recovery.StreamServerInterceptor()),
+	)
 	ctl := Server{
 		cache:  storage,
 		server: server,
