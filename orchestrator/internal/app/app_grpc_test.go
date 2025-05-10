@@ -70,7 +70,7 @@ func TestGrpcApp(t *testing.T) {
 	idDone := getTaskId(t, httpClient, header, `{"expression": "2+2"}`)
 	idFailed := getTaskId(t, httpClient, header, `{"expression": "2/(2-2)"}`)
 
-	time.Sleep(20 * time.Second)
+	time.Sleep(30 * time.Second)
 
 	sendRequest(t, httpClient, test{
 		name:     "calc_DONE",
@@ -78,7 +78,7 @@ func TestGrpcApp(t *testing.T) {
 		method:   http.MethodGet,
 		auth:     header,
 		status:   http.StatusOK,
-		response: fmt.Sprintf(`{"expression":{"id":"%s","result":4,"status":"DONE"}}`, idDone),
+		response: fmt.Sprintf(`{"expression":{"id":"%s","expression":"2+2","result":4,"status":"DONE"}}`, idDone),
 	})
 
 	sendRequest(t, httpClient, test{
@@ -87,6 +87,6 @@ func TestGrpcApp(t *testing.T) {
 		method:   http.MethodGet,
 		auth:     header,
 		status:   http.StatusOK,
-		response: fmt.Sprintf(`{"expression":{"id":"%s","result":0,"status":"FAILED"}}`, idFailed),
+		response: fmt.Sprintf(`{"expression":{"id":"%s","expression":"2/(2-2)","result":0,"status":"FAILED"}}`, idFailed),
 	})
 }
