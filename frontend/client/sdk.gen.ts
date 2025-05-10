@@ -18,6 +18,9 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
     meta?: Record<string, unknown>;
 };
 
+/**
+ * Добавить математическое выражение из чисел, знаков [+, -, *, /, (, )] в очередь на выполнение. Возвращает ULID ID при успешном запросе
+ */
 export const postCalculate = <ThrowOnError extends boolean = false>(options: Options<PostCalculateData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).post<PostCalculateResponse, PostCalculateError, ThrowOnError>({
         security: [
@@ -35,6 +38,9 @@ export const postCalculate = <ThrowOnError extends boolean = false>(options: Opt
     });
 };
 
+/**
+ * Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает список выражений при успешном запросе
+ */
 export const getExpressions = <ThrowOnError extends boolean = false>(options?: Options<GetExpressionsData, ThrowOnError>) => {
     return (options?.client ?? _heyApiClient).get<GetExpressionsResponse, GetExpressionsError, ThrowOnError>({
         security: [
@@ -48,6 +54,9 @@ export const getExpressions = <ThrowOnError extends boolean = false>(options?: O
     });
 };
 
+/**
+ * Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает выражение при успешном запросе
+ */
 export const getExpressionsById = <ThrowOnError extends boolean = false>(options: Options<GetExpressionsByIdData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).get<GetExpressionsByIdResponse, GetExpressionsByIdError, ThrowOnError>({
         security: [

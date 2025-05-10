@@ -54,7 +54,7 @@ function getColor(status: string): string {
 </script>
 
 <template>
-  <UContainer class="p-20 dark:bg-dark-2">
+  <UContainer class="w-full h-full p-20">
     <!-- Loading state -->
     <div v-if="!response && !error" class="text-center">
       <USkeleton class="h-8 w-[300px] mb-4" />
@@ -74,9 +74,10 @@ function getColor(status: string): string {
           class="p-4"
       >
         <div
-            :class="[getColor(expression.status ?? 'PROCESSING'), 'border rounded-xl p-5 text-2xl transition-colors']"
+            :class="[getColor(expression.status ?? 'PROCESSING'), 'border rounded-xl p-5 transition-colors']"
         >
-          <h1>{{ expression.id }} = {{ expression.result }}</h1>
+          <h1 class="text-2xl">{{ expression.expression }} = {{ expression.result }}</h1>
+          <p class="text-xs">{{ expression.id }}</p>
         </div>
       </li>
     </ul>

@@ -3,7 +3,7 @@ import AppNavbar from "~/components/global/AppNavbar.vue";
 </script>
 
 <template>
-  <UApp>
+  <UApp class="w-full h-full">
     <NuxtLayout>
       <AppNavbar/>
       <NuxtPage class="w-full h-full"/>

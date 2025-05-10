@@ -15,7 +15,7 @@ export type DtoAuthResponse = {
 };
 
 export type DtoCalculateRequest = {
-    expression: string;
+    expression?: string;
 };
 
 export type DtoCalculateResponse = {
@@ -23,6 +23,7 @@ export type DtoCalculateResponse = {
 };
 
 export type DtoExpression = {
+    expression?: string;
     id?: string;
     result?: number;
     status?: string;
@@ -47,6 +48,14 @@ export type PostCalculateData = {
 };
 
 export type PostCalculateErrors = {
+    /**
+     * Bad Request
+     */
+    400: DtoApiError;
+    /**
+     * Forbidden
+     */
+    403: DtoApiError;
     /**
      * Unprocessable Entity
      */
@@ -81,6 +90,10 @@ export type GetExpressionsData = {
 
 export type GetExpressionsErrors = {
     /**
+     * Forbidden
+     */
+    403: DtoApiError;
+    /**
      * Internal Server Error
      */
     500: DtoApiError;
@@ -111,13 +124,17 @@ export type GetExpressionsByIdData = {
 
 export type GetExpressionsByIdErrors = {
     /**
+     * Bad Request
+     */
+    400: DtoApiError;
+    /**
+     * Forbidden
+     */
+    403: DtoApiError;
+    /**
      * Not Found
      */
     404: DtoApiError;
-    /**
-     * Unprocessable Entity
-     */
-    422: DtoApiError;
 };
 
 export type GetExpressionsByIdError = GetExpressionsByIdErrors[keyof GetExpressionsByIdErrors];
@@ -155,6 +172,10 @@ export type PostLoginErrors = {
      */
     404: DtoApiError;
     /**
+     * Unprocessable Entity
+     */
+    422: DtoApiError;
+    /**
      * Internal Server Error
      */
     500: DtoApiError;
@@ -183,9 +204,17 @@ export type PostRegisterData = {
 
 export type PostRegisterErrors = {
     /**
+     * Bad Request
+     */
+    400: DtoApiError;
+    /**
      * Conflict
      */
     409: DtoApiError;
+    /**
+     * Unprocessable Entity
+     */
+    422: DtoApiError;
     /**
      * Internal Server Error
      */

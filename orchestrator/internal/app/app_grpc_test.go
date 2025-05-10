@@ -70,7 +70,7 @@ func TestGrpcApp(t *testing.T) {
 	idDone := getTaskId(t, httpClient, header, `{"expression": "2+2"}`)
 	idFailed := getTaskId(t, httpClient, header, `{"expression": "2/(2-2)"}`)
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(20 * time.Second)
 
 	sendRequest(t, httpClient, test{
 		name:     "calc_DONE",
