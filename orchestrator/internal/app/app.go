@@ -52,7 +52,9 @@ func (a App) Stop() {
 	log.Info("shutdown complete")
 }
 
-func New(cfg *config.Config) *App {
+func New() *App {
+	cfg := config.New()
+
 	cache, err := db.NewCache(cfg.ValkeyConn)
 	if err != nil {
 		panic(err)

@@ -2,7 +2,6 @@ package main
 
 import (
 	"orchestrator/internal/app"
-	"orchestrator/internal/config"
 	"os"
 	"os/signal"
 	"syscall"
@@ -22,8 +21,7 @@ import (
 // @name Authorization
 // @description "Введите 'Bearer TOKEN' чтобы правильно использовать JWT API Token"
 func main() {
-	cfg := config.New()
-	a := app.New(cfg)
+	a := app.New()
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)

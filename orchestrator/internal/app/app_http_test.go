@@ -6,7 +6,6 @@ import (
 	"github.com/oklog/ulid/v2"
 	"github.com/stretchr/testify/require"
 	"net/http"
-	"orchestrator/internal/config"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -23,8 +22,7 @@ func TestHttpApp(t *testing.T) {
 
 	valkey, postgres := createDb(t, ctx)
 
-	cfg := config.New()
-	app := New(cfg)
+	app := New()
 
 	httpClient := &http.Client{
 		Transport: &http.Transport{

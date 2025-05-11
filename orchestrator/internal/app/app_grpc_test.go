@@ -8,7 +8,6 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"net/http"
-	"orchestrator/internal/config"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -32,8 +31,7 @@ func TestGrpcApp(t *testing.T) {
 
 	valkey, postgres := createDb(t, ctx)
 
-	cfg := config.New()
-	app := New(cfg)
+	app := New()
 
 	app.Start()
 
