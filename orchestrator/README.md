@@ -16,6 +16,7 @@ type Config struct {
 ```
 
 ## Библиотеки
+- argon2 - хэширование паролей
 - sonic - для работы с json
 - testcontainers - e2e тестирование
 - grpc - общение с агентом
