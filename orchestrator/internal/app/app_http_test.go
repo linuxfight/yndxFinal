@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"testing"
+	"time"
 )
 
 func TestHttpApp(t *testing.T) {
@@ -41,6 +42,8 @@ func TestHttpApp(t *testing.T) {
 	})
 
 	app.Start()
+
+	time.Sleep(15 * time.Second)
 
 	tests := generateHttpTests(t, httpClient)
 
