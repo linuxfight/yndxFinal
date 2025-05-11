@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/healthcheck"
+	"github.com/gofiber/fiber/v3/middleware/logger"
 	"orchestrator/internal/controllers/auth"
 	"orchestrator/internal/controllers/expr"
 	jwtware "orchestrator/internal/controllers/middlewares/jwt"
@@ -28,6 +29,7 @@ func NewFiber(userRepo *users.Queries, exprRepo *expressions.Queries, cache *db.
 	app.Get(healthcheck.DefaultStartupEndpoint, healthcheck.NewHealthChecker())
 	app.Use(cors.New())
 	app.Use(recoverer.New())
+	app.Use(logger.New())
 	app.Use(swagger.New(swagger.Config{
 		FilePath: "./docs/swagger.json",
 		Path:     "./docs",
