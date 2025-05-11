@@ -12,7 +12,7 @@ const (
 
 type Config struct {
 	ApiAddr        string `env:"API_ADDR" env-default:"localhost:9090"`
-	ComputingPower int    `env:"COMPUTING_POWER" env-default:"1"`
+	ComputingPower int    `env:"COMPUTING_POWER" env-default:"10"`
 }
 
 func New() *Config {
