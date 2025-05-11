@@ -8,7 +8,8 @@ import (
 	"orchestrator/internal/utils"
 )
 
-// GetById @Summary      Получить выражение по ID
+// GetById godoc
+// @Summary      Получить выражение по ID
 // @Description  Выражение состоит из ID (ULID), Expression (само выражение), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает выражение при успешном запросе
 // @Tags         expressions
 // @Accept       json

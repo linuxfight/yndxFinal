@@ -14,7 +14,8 @@
 ├── internal
 │ ├── app
 │ │ ├── app.go
-│ │ ├── app_test.go
+│ │ ├── app_grpc_test.go
+│ │ ├── app_http_test.go
 │ │ └── app_utils_test.go
 │ ├── config
 │ │ └── config.go

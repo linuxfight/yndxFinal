@@ -113,15 +113,17 @@ paths:
             $ref: '#/definitions/dto.ApiError'
       security:
       - Bearer: []
+      summary: Добавить выражение в очередь на выполнение
       tags:
       - calculate
   /expressions:
     get:
       consumes:
       - application/json
-      description: Выражение состоит из ID (ULID), Result (0 или другое число) и Status
-        (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется).
-        Возвращает список выражений при успешном запросе
+      description: Выражение состоит из ID (ULID), Expression (само выражение), Result
+        (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при
+        выполнении, PROCESSING - Выполняется). Возвращает список выражений при успешном
+        запросе
       produces:
       - application/json
       responses:
@@ -139,15 +141,16 @@ paths:
             $ref: '#/definitions/dto.ApiError'
       security:
       - Bearer: []
+      summary: Получить весь список выражений
       tags:
       - expressions
   /expressions/{id}:
     get:
       consumes:
       - application/json
-      description: Выражение состоит из ID (ULID), Result (0 или другое число) и Status
-        (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется).
-        Возвращает выражение при успешном запросе
+      description: Выражение состоит из ID (ULID), Expression (само выражение), Result
+        (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при
+        выполнении, PROCESSING - Выполняется). Возвращает выражение при успешном запросе
       parameters:
       - description: 01JTE60CDWQ5R3QSWZBP8J6FG3
         in: path
@@ -175,6 +178,7 @@ paths:
             $ref: '#/definitions/dto.ApiError'
       security:
       - Bearer: []
+      summary: Получить выражение по ID
       tags:
       - expressions
   /login:

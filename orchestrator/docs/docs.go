@@ -36,6 +36,7 @@ const docTemplate = `{
                 "tags": [
                     "calculate"
                 ],
+                "summary": "Добавить выражение в очередь на выполнение",
                 "parameters": [
                     {
                         "description": "Объект, содержащий в себе выражение",
@@ -94,7 +95,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает список выражений при успешном запросе",
+                "description": "Выражение состоит из ID (ULID), Expression (само выражение), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает список выражений при успешном запросе",
                 "consumes": [
                     "application/json"
                 ],
@@ -104,6 +105,7 @@ const docTemplate = `{
                 "tags": [
                     "expressions"
                 ],
+                "summary": "Получить весь список выражений",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -133,7 +135,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "Выражение состоит из ID (ULID), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает выражение при успешном запросе",
+                "description": "Выражение состоит из ID (ULID), Expression (само выражение), Result (0 или другое число) и Status (DONE - Успешно выполнено, FAILED - Ошибка при выполнении, PROCESSING - Выполняется). Возвращает выражение при успешном запросе",
                 "consumes": [
                     "application/json"
                 ],
@@ -143,6 +145,7 @@ const docTemplate = `{
                 "tags": [
                     "expressions"
                 ],
+                "summary": "Получить выражение по ID",
                 "parameters": [
                     {
                         "type": "string",
