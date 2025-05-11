@@ -1,10 +1,9 @@
 package app
 
 import (
-	"context"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/log"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"orchestrator/internal/config"
 	"orchestrator/internal/controllers"
 	"orchestrator/internal/controllers/tasks"
@@ -16,7 +15,7 @@ var listenConfig = fiber.ListenConfig{DisableStartupMessage: true}
 type App struct {
 	web   *fiber.App
 	stub  *tasks.Server
-	db    *pgx.Conn
+	db    *pgxpool.Pool
 	cache *db.Cache
 }
 
@@ -63,11 +62,7 @@ func New() *App {
 
 	userRepo, exprRepo, dbConn, err := db.NewSql(cfg.PostgresConn)
 	if err != nil {
-		if dbConn != nil {
-			if dbErr := dbConn.Close(context.Background()); dbErr != nil {
-				panic(dbErr)
-			}
-		}
+		dbConn.Close()
 		panic(err)
 	}
 	log.Info("connected to database")
