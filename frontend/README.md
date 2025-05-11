@@ -17,7 +17,7 @@ npm run deploy
 Использование бэкэнда на localhost:8080 - не предусмотрено, т.к. при локальной разработке используется SwaggerUI.
 
 # Разработка
-1. Установите NodeJS (https://nodejs.org/)
+Установите NodeJS (https://nodejs.org/)
 ```shell
 # pnpm
 pnpm install

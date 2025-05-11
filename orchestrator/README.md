@@ -1,3 +1,32 @@
+# Оркестратор
+
+## Конфигурация
+Происходит через изменение переменных среды:
+```go
+type Config struct {
+	ValkeyConn   string `env:"VALKEY_CONN" env-default:"127.0.0.1:6379"` // подключение к Redis/Valkey
+	PostgresConn string `env:"POSTGRES_CONN" env-default:"postgres://postgres:password@localhost:5432/db"` // подключение к PostgreSQL
+	JwtSecret    string `env:"JWT_SECRET" env-default:"not_v3ry_s3cR3T"` // секрет для генерации и проверки JWT токенов
+
+	AddictionTime      int `env:"TIME_ADDITION_MS" env-default:"1000"` // время на сложение
+	SubstractionTime   int `env:"TIME_SUBTRACTION_MS" env-default:"1000"` // время на вычитание
+	MultiplicationTime int `env:"TIME_MULTIPLICATIONS_MS" env-default:"1000"` // время на умножение
+	DivisionTime       int `env:"TIME_DIVISIONS_MS" env-default:"1000"` // время на деление
+}
+```
+
+## Библиотеки
+- sonic - для работы с json
+- testcontainers - e2e тестирование
+- grpc - общение с агентом
+- valkey, pgx - общение с бд
+- sqlc - генерация кода для бд
+- clearenv - конфигурация
+- ulid - удобные идентификаторы
+- swag - генерация swagger
+- fiber - http фреймворк
+
+## Структура проекта
 ```shell
 .
 ├── Dockerfile
@@ -5,22 +34,22 @@
 ├── cmd
 │ └── main.go
 ├── dev-compose.yml
-├── docs
+├── docs (документация swagger)
 │ ├── docs.go
 │ ├── swagger.json
 │ └── swagger.yaml
 ├── go.mod
 ├── go.sum
 ├── internal
-│ ├── app
+│ ├── app (приложение)
 │ │ ├── app.go
-│ │ ├── app_grpc_test.go
-│ │ ├── app_http_test.go
+│ │ ├── app_grpc_test.go (e2e тест)
+│ │ ├── app_http_test.go (e2e тест)
 │ │ └── app_utils_test.go
-│ ├── config
+│ ├── config (конфиг)
 │ │ └── config.go
-│ ├── controllers
-│ │ ├── auth
+│ ├── controllers (http и grpc логика)
+│ │ ├── auth (login, register)
 │ │ │ ├── controller.go
 │ │ │ ├── login.go
 │ │ │ ├── password.go
@@ -28,19 +57,19 @@
 │ │ │ ├── register.go
 │ │ │ ├── utils.go
 │ │ │ └── utils_test.go
-│ │ ├── dto
+│ │ ├── dto (модели http API)
 │ │ │ ├── auth.go
 │ │ │ ├── const.go
 │ │ │ ├── error.go
 │ │ │ ├── solverCalculate.go
 │ │ │ └── solverGet.go
-│ │ ├── expr
+│ │ ├── expr (calculate, list, id)
 │ │ │ ├── calculate.go
 │ │ │ ├── controller.go
 │ │ │ ├── getById.go
 │ │ │ └── list.go
 │ │ ├── fiber.go
-│ │ ├── middlewares
+│ │ ├── middlewares (мидлвари для http api)
 │ │ │ ├── jwt
 │ │ │ │ ├── config.go
 │ │ │ │ ├── config_test.go
@@ -57,13 +86,13 @@
 │ │ │     ├── swagger.yaml
 │ │ │     ├── swagger_missing.json
 │ │ │     └── swagger_test.go
-│ │ └── tasks
+│ │ └── tasks (grpc api)
 │ │     ├── gen
 │ │     │ ├── tasks.pb.go
 │ │     │ └── tasks_grpc.pb.go
 │ │     ├── server.go
 │ │     └── utils.go
-│ ├── db
+│ ├── db (codegen и код для valkey, postgres)
 │ │ ├── cache.go
 │ │ ├── cache_test.go
 │ │ ├── connection.go
@@ -75,13 +104,13 @@
 │ │     ├── db.go
 │ │     ├── models.go
 │ │     └── query.sql.go
-│ └── utils
+│ └── utils (утилиты для http api)
 │     ├── fiber.go
-│     └── fiber_test.go
+│     └── fiber_test.go (unit тест)
 ├── pkg
-│ └── calc
+│ └── calc (парсер)
 │     ├── calc.go
-│     └── calc_test.go
+│     └── calc_test.go (unit тест)
 ├── sql
 │ ├── expressions
 │ │ ├── query.sql
