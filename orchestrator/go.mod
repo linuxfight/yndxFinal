@@ -18,7 +18,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	github.com/swaggo/swag v1.16.4
 	github.com/testcontainers/testcontainers-go v0.37.0
-	github.com/valkey-io/valkey-go v1.0.59
+	github.com/valkey-io/valkey-go v1.0.60
 	golang.org/x/crypto v0.38.0
 	google.golang.org/grpc v1.72.0
 	google.golang.org/protobuf v1.36.6
