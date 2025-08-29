@@ -14,7 +14,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v5 v5.7.5
-	github.com/oklog/ulid/v2 v2.1.0
+	github.com/oklog/ulid/v2 v2.1.1
 	github.com/stretchr/testify v1.10.0
 	github.com/swaggo/swag v1.16.4
 	github.com/testcontainers/testcontainers-go v0.37.0
